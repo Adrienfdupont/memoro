@@ -8,7 +8,7 @@ import { AuthService } from '../auth.service';
 })
 export class LoginComponent {
   loginForm: FormGroup;
-  serverResponse: string;
+  message: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -18,7 +18,7 @@ export class LoginComponent {
       username: [null, Validators.required],
       password: [null, Validators.required],
     });
-    this.serverResponse = '';
+    this.message = '';
   }
 
   login(): string {
@@ -27,9 +27,9 @@ export class LoginComponent {
         localStorage.setItem('token', response.token);
       },
       error: (response) => {
-        this.serverResponse = response.error.message;
+        this.message = response.error.message;
       },
     });
-    return this.serverResponse;
+    return this.message;
   }
 }
