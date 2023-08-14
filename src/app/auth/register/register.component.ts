@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from '../auth.service';
 import { AbstractControl, ValidatorFn } from '@angular/forms';
+import { UserService } from 'src/app/admin/services/user.service';
 
 @Component({
   selector: 'app-register',
@@ -14,7 +14,7 @@ export class RegisterComponent {
 
   constructor(
     private formBuilder: FormBuilder,
-    private authService: AuthService
+    private userService: UserService
   ) {
     this.registerForm = this.formBuilder.group({
       username: [null, Validators.required],
@@ -29,7 +29,7 @@ export class RegisterComponent {
   }
 
   submit(): void {
-    this.authService.register(this.registerForm.getRawValue()).subscribe({
+    this.userService.createUser(this.registerForm.getRawValue()).subscribe({
       next: (response) => {
         this.messageError = false;
         this.message = response.message;

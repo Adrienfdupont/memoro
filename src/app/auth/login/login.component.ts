@@ -15,14 +15,14 @@ export class LoginComponent {
     private authService: AuthService
   ) {
     this.loginForm = this.formBuilder.group({
-      username: [null, Validators.required],
+      name: [null, Validators.required],
       password: [null, Validators.required],
     });
     this.message = '';
   }
 
   login(): string {
-    this.authService.getToken(this.loginForm.getRawValue()).subscribe({
+    this.authService.login(this.loginForm.getRawValue()).subscribe({
       next: (response) => {
         localStorage.setItem('token', response.token);
       },

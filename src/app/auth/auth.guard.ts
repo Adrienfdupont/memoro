@@ -1,11 +1,25 @@
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from './auth.service';
 
 export const authGuard = () => {
   const router = inject(Router);
+  const authService = inject(AuthService);
 
   const hasToken = (): boolean => {
-    return localStorage.getItem('token') !== null;
+    const token = localStorage.getItem('token');
+    if (token) {
+      const encodedPayload = token.split('.')[1];
+      const payload = JSON.parse(atob(encodedPayload));
+      const expirationDate = new Date(payload.expirationDate);
+      const today = new Date();
+      if (today < expirationDate) {
+        authService.setUserId(payload.userId);
+        return true;
+      }
+    }
+
+    return false;
   };
 
   return hasToken() ? true : router.parseUrl('login');

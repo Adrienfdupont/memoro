@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -15,16 +15,29 @@ export class AuthService {
     this.apiUrl = 'http://localhost:3000';
   }
 
-  getToken(userdata: object): Observable<any> {
+  login(userdata: object): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/login`, userdata);
-  }
-
-  register(userdata: object): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/user`, userdata);
   }
 
   logout(): void {
     localStorage.removeItem('token');
     this.router.navigateByUrl('login');
+  }
+
+  getUserId(): number | null {
+    let userId: string | null;
+    userId = localStorage.getItem('userId');
+    return userId ? parseInt(userId) : null;
+  }
+
+  setUserId(userId: number) {
+    localStorage.setItem('userId', userId.toString());
+  }
+
+  getHeaders(): HttpHeaders {
+    const token = localStorage.getItem('token');
+    return new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
   }
 }
