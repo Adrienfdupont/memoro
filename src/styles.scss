@@ -10,4 +10,8 @@
   .primary {
     @apply bg-blue-800 border-blue-800 border-2 hover:text-blue-800;
   }
+
+  .warning {
+    @apply bg-red-800 border-red-800 border-2 hover:text-red-800;
+  }
 }

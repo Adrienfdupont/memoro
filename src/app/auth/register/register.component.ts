@@ -10,14 +10,14 @@ import { UserService } from 'src/app/admin/services/user.service';
 export class RegisterComponent {
   registerForm: FormGroup;
   message: string;
-  messageError: boolean;
+  messageIsError: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
     private userService: UserService
   ) {
     this.registerForm = this.formBuilder.group({
-      username: [null, Validators.required],
+      name: [null, Validators.required],
       password: [null, Validators.required],
       confirmedPassword: [null, Validators.required],
     });
@@ -25,17 +25,17 @@ export class RegisterComponent {
       .get('confirmedPassword')
       ?.setValidators(this.passwordMatchValidator());
     this.message = '';
-    this.messageError = false;
+    this.messageIsError = false;
   }
 
   submit(): void {
     this.userService.createUser(this.registerForm.getRawValue()).subscribe({
       next: (response) => {
-        this.messageError = false;
+        this.messageIsError = false;
         this.message = response.message;
       },
       error: (response) => {
-        this.messageError = true;
+        this.messageIsError = true;
         this.message = response.error.message;
       },
     });
@@ -51,8 +51,8 @@ export class RegisterComponent {
         confirmedPassword &&
         password.value !== confirmedPassword.value
       ) {
-        this.messageError = true;
-        this.message = "Passwords don't match";
+        this.messageIsError = true;
+        this.message = "Passwords don't match.";
         return { passwordMismatch: true };
       }
       this.message = '';

@@ -7,7 +7,7 @@
     <div class="flex flex-col">
       <label for="name">Choose a name :</label>
       <input
-        formControlName="username"
+        formControlName="name"
         required
         type="text"
         class="border-b-2 outline-none"
@@ -38,8 +38,8 @@
       <p
         class="absolute"
         [ngClass]="{
-          'text-red-700': messageError,
-          'text-green-700': !messageError
+          'text-red-700': messageIsError,
+          'text-green-700': !messageIsError
         }"
       >
         {{ message }}
