@@ -1,0 +1,36 @@
+<header
+  class="flex justify-between items-center bg-gray-800 py-2 px-4 text-white"
+>
+  <div class="text-3xl">Memoro</div>
+
+  <div>
+    <i
+      class="material-icons text-5xl hover:cursor-pointer"
+      (click)="toggleMenu()"
+      >menu</i
+    >
+  </div>
+
+  <nav
+    class="absolute right-0 top-0 bg-white text-black py-2 px-4"
+    [ngClass]="{ hidden: !menuIsOpen }"
+  >
+    <div class="flex justify-end">
+      <i
+        class="material-icons text-5xl hover:cursor-pointer"
+        (click)="toggleMenu()"
+        >close</i
+      >
+    </div>
+
+    <div class="p-4 leading-loose">
+      <ul>
+        <li routerLink="/">Accueil</li>
+
+        <li routerLink="/account">Compte</li>
+
+        <li routerLink="/logout">Déconnexion</li>
+      </ul>
+    </div>
+  </nav>
+</header>
