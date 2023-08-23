@@ -17,7 +17,7 @@ export class RegisterComponent {
     private userService: UserService
   ) {
     this.registerForm = this.formBuilder.group({
-      username: [null, Validators.required],
+      name: [null, Validators.required],
       password: [null, Validators.required],
       confirmedPassword: [null, Validators.required],
     });
