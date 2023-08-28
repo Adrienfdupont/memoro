@@ -36,13 +36,14 @@
 
     <div class="h-8 relative">
       <p
+        *ngIf="message"
         class="absolute"
         [ngClass]="{
-          'text-red-700': messageIsError,
-          'text-green-700': !messageIsError
+          'text-red-700': message.isError,
+          'text-green-700': !message.isError
         }"
       >
-        {{ message }}
+        {{ message.content }}
       </p>
     </div>
 

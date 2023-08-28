@@ -8,8 +8,7 @@ import { UserService } from 'src/app/admin/services/user.service';
 })
 export class RegisterComponent {
   registerForm: FormGroup;
-  message: string;
-  messageIsError: boolean;
+  message: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -20,8 +19,6 @@ export class RegisterComponent {
       password: [null, Validators.required],
       confirmedPassword: [null, Validators.required],
     });
-    this.message = '';
-    this.messageIsError = false;
   }
 
   submit(): void {
@@ -31,12 +28,10 @@ export class RegisterComponent {
 
     this.userService.createUser(this.registerForm.getRawValue()).subscribe({
       next: (response) => {
-        this.messageIsError = false;
-        this.message = response.message;
+        this.message = { isError: false, content: response.message };
       },
       error: (response) => {
-        this.messageIsError = true;
-        this.message = response.error.message;
+        this.message = { isError: true, content: response.error.message };
       },
     });
   }
@@ -46,13 +41,11 @@ export class RegisterComponent {
       this.registerForm.get('password')?.value ===
       this.registerForm.get('confirmedPassword')?.value
     ) {
-      this.messageIsError = false;
-      this.message = '';
+      this.message = {};
       return true;
     }
 
-    this.messageIsError = true;
-    this.message = 'Passwords must match.';
+    this.message = { isError: true, content: 'Passwords must match.' };
     return false;
   }
 }
