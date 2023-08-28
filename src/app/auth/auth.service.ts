@@ -23,21 +23,4 @@ export class AuthService {
     localStorage.removeItem('token');
     this.router.navigateByUrl('login');
   }
-
-  getUserId(): number | null {
-    let userId: string | null;
-    userId = localStorage.getItem('userId');
-    return userId ? parseInt(userId) : null;
-  }
-
-  setUserId(userId: number) {
-    localStorage.setItem('userId', userId.toString());
-  }
-
-  getHeaders(): HttpHeaders {
-    const token = localStorage.getItem('token');
-    return new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
-  }
 }

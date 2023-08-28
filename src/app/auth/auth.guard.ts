@@ -14,7 +14,7 @@ export const authGuard = () => {
       const expirationDate = new Date(payload.expirationDate);
       const today = new Date();
       if (today < expirationDate) {
-        authService.setUserId(payload.userId);
+        localStorage.setItem('userId', payload.userId.toString());
         return true;
       }
     }
