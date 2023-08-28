@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AbstractControl, ValidatorFn } from '@angular/forms';
 import { UserService } from 'src/app/admin/services/user.service';
 
 @Component({
@@ -21,14 +20,15 @@ export class RegisterComponent {
       password: [null, Validators.required],
       confirmedPassword: [null, Validators.required],
     });
-    this.registerForm
-      .get('confirmedPassword')
-      ?.setValidators(this.passwordMatchValidator());
     this.message = '';
     this.messageIsError = false;
   }
 
   submit(): void {
+    if (!this.checkFields()) {
+      return;
+    }
+
     this.userService.createUser(this.registerForm.getRawValue()).subscribe({
       next: (response) => {
         this.messageIsError = false;
@@ -41,22 +41,18 @@ export class RegisterComponent {
     });
   }
 
-  passwordMatchValidator(): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: any } | null => {
-      const password = this.registerForm.get('password');
-      const confirmedPassword = control;
-
-      if (
-        password &&
-        confirmedPassword &&
-        password.value !== confirmedPassword.value
-      ) {
-        this.messageIsError = true;
-        this.message = "Passwords don't match.";
-        return { passwordMismatch: true };
-      }
+  checkFields(): boolean {
+    if (
+      this.registerForm.get('password')?.value ===
+      this.registerForm.get('confirmedPassword')?.value
+    ) {
+      this.messageIsError = false;
       this.message = '';
-      return null;
-    };
+      return true;
+    }
+
+    this.messageIsError = true;
+    this.message = 'Passwords must match.';
+    return false;
   }
 }
