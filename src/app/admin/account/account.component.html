@@ -1,81 +1,84 @@
-<app-navigation></app-navigation>
+<div class="bg-gray-800 h-screen p-4 flex flex-col">
+  <app-navigation></app-navigation>
 
-<main class="flex justify-center items-center bg-gray-800 h-screen">
-  <form
-    [formGroup]="updateForm"
-    (submit)="save()"
-    class="flex flex-col gap-8 text-white bg-blue-950 p-8 rounded-lg w-80"
-  >
-    <div class="flex flex-col">
-      <label for="name">Modify your name :</label>
-      <input
-        formControlName="name"
-        required
-        type="text"
-        class="border-b-2 outline-none bg-transparent"
-        value="{{ user?.name }}"
-      />
-    </div>
-
-    <div class="flex flex-col">
-      <label for="password">Modify your password :</label>
-      <input
-        formControlName="newPassword"
-        required
-        type="password"
-        class="border-b-2 outline-none bg-transparent"
-        placeholder="********"
-        (input)="showInputs()"
-      />
-    </div>
-
-    <div
-      class="flex flex-col gap-8 ease-in-out duration-300"
-      [ngClass]="{
-        'opacity-0': !inputsAreVisible,
-        'opacity-100': inputsAreVisible
-      }"
+  <main class="flex-grow flex justify-center items-center">
+    <form
+      [formGroup]="updateForm"
+      (submit)="save()"
+      class="flex flex-col gap-8 bg-white p-8 rounded-lg w-80"
     >
       <div class="flex flex-col">
-        <label for="newPassword">Confirm your new password :</label>
+        <label for="name">Modify your name :</label>
         <input
-          formControlName="confirmedPassword"
+          formControlName="name"
           required
-          type="password"
+          type="text"
           class="border-b-2 outline-none bg-transparent"
-          placeholder=""
+          value="{{ user?.name }}"
         />
       </div>
 
       <div class="flex flex-col">
-        <label for="password">Enter your current password :</label>
+        <label for="password">Modify your password :</label>
         <input
-          formControlName="password"
+          formControlName="newPassword"
           required
           type="password"
           class="border-b-2 outline-none bg-transparent"
-          placeholder=""
+          placeholder="********"
+          (input)="showInputs()"
         />
       </div>
-    </div>
 
-    <div class="h-8 text-red-500 relative">
-      <p
-        class="absolute"
+      <div
+        class="flex flex-col gap-8 ease-in-out duration-300"
         [ngClass]="{
-          'text-red-700': messageIsError,
-          'text-green-700': !messageIsError
+          'opacity-0': !inputsAreVisible,
+          'opacity-100': inputsAreVisible
         }"
       >
-        {{ message }}
-      </p>
-    </div>
+        <div class="flex flex-col">
+          <label for="newPassword">Confirm your new password :</label>
+          <input
+            formControlName="confirmedPassword"
+            required
+            type="password"
+            class="border-b-2 outline-none bg-transparent"
+            placeholder=""
+          />
+        </div>
 
-    <div class="flex justify-between">
-      <button class="btn warning hover:bg-transparent">Cancel</button>
-      <button type="submit" class="btn primary hover:bg-transparent">
-        Save
-      </button>
-    </div>
-  </form>
-</main>
+        <div class="flex flex-col">
+          <label for="password">Enter your current password :</label>
+          <input
+            formControlName="password"
+            required
+            type="password"
+            class="border-b-2 outline-none bg-transparent"
+            placeholder=""
+          />
+        </div>
+      </div>
+
+      <div class="h-8 text-red-500 relative">
+        <p
+          *ngIf="message"
+          class="absolute"
+          [ngClass]="{
+            'text-red-700': message.isError,
+            'text-green-700': !message.isError
+          }"
+        >
+          {{ message.content }}
+        </p>
+      </div>
+
+      <div class="flex justify-between">
+        <button class="btn warning hover:bg-transparent">Cancel</button>
+        <button type="submit" class="btn primary hover:bg-transparent">
+          Save
+        </button>
+      </div>
+    </form>
+  </main>
+</div>

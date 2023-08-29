@@ -10,8 +10,7 @@ import { AuthService } from 'src/app/auth/auth.service';
 })
 export class AccountComponent {
   user: User | undefined;
-  message: string;
-  messageIsError: boolean;
+  message: any;
   updateForm: FormGroup;
   inputsAreVisible: boolean;
   router: any;
@@ -21,8 +20,6 @@ export class AccountComponent {
     private authService: AuthService,
     private formBuilder: FormBuilder
   ) {
-    this.message = '';
-    this.messageIsError = false;
     this.inputsAreVisible = false;
     this.updateForm = this.formBuilder.group({
       name: [null],
@@ -30,13 +27,10 @@ export class AccountComponent {
       confirmedPassword: [null],
       password: [null],
     });
-    const userId = this.userService.getUserId();
 
-    if (userId) {
-      this.userService.getUser().subscribe((user) => {
-        this.user = user;
-      });
-    }
+    this.userService.getUser().subscribe((user) => {
+      this.user = user;
+    });
   }
 
   showInputs(): void {
@@ -44,6 +38,9 @@ export class AccountComponent {
       this.inputsAreVisible = true;
     } else {
       this.inputsAreVisible = false;
+      this.updateForm.get('newPassword')?.setValue(null);
+      this.updateForm.get('confirmedPassword')?.setValue(null);
+      this.updateForm.get('password')?.setValue(null);
     }
   }
 
@@ -65,13 +62,13 @@ export class AccountComponent {
     if (this.user?.id) {
       this.userService.updateUser(userData).subscribe({
         next: (response: any) => {
-          this.messageIsError = false;
-          this.message = response.message;
-          this.setNewToken(userData);
+          this.message = { isError: false, content: response.message };
+          if (response.token) {
+            localStorage.setItem('token', response.token);
+          }
         },
         error: (response: any) => {
-          this.messageIsError = true;
-          this.message = response.error.message;
+          this.message = { isError: true, content: response.error.message };
         },
       });
     }
@@ -79,26 +76,20 @@ export class AccountComponent {
 
   checkFields(): boolean {
     if (
-      this.updateForm.get('newPassword')?.value ===
+      (this.updateForm.get('newPassword')?.value === null &&
+        this.updateForm.get('confirmedPassword')?.value === null) ||
+      (this.updateForm.get('newPassword')?.value ===
         this.updateForm.get('confirmedPassword')?.value &&
-      this.updateForm.get('password')?.value
+        this.updateForm.get('password')?.value)
     ) {
       return true;
     }
 
-    this.messageIsError = true;
-    this.message =
-      'New password must be confirmed and current password must be set.';
+    this.message = {
+      isError: true,
+      content:
+        'New password must be confirmed and current password must be set.',
+    };
     return false;
-  }
-
-  setNewToken(userData: any) {
-    this.authService
-      .login({ name: userData.name, password: userData.newPassword })
-      .subscribe({
-        next: (response) => {
-          localStorage.setItem('token', response.token);
-        },
-      });
   }
 }
