@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Collection } from '../types/collection.type';
 import { CollectionService } from '../services/collection.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -7,41 +7,45 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   selector: 'app-home',
   templateUrl: './home.component.html',
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
   collections: Collection[] | undefined;
-  newCardForm: FormGroup;
-  message: string;
-  modalIsVisible: boolean;
+  newCollectionForm!: FormGroup;
+  popupMessage: any;
+  popupIsVisible = false;
 
   constructor(
     private collectionService: CollectionService,
     private formBuilder: FormBuilder
-  ) {
-    this.newCardForm = this.formBuilder.group({
+  ) {}
+
+  ngOnInit(): void {
+    this.newCollectionForm = this.formBuilder.group({
       name: [null, Validators.required],
     });
-    this.modalIsVisible = false;
-    this.message = '';
+
     this.getCollections();
   }
 
-  submit(): void {
+  addCollection(): void {
     this.collectionService
-      .addCollection(this.newCardForm.getRawValue())
+      .addCollection(this.newCollectionForm.getRawValue())
       .subscribe({
         next: () => {
           this.getCollections();
-          this.toggleModal();
+          this.togglePopup();
         },
-        error: (response) => {
-          this.message = response.error.message;
+        error: (response: any) => {
+          this.popupMessage = {
+            isError: true,
+            content: response.error.message,
+          };
         },
       });
   }
 
   getCollections(): void {
     this.collectionService.getCollections().subscribe({
-      next: (response) => {
+      next: (response: any) => {
         this.collections = response;
       },
       error: () => {
@@ -50,7 +54,9 @@ export class HomeComponent {
     });
   }
 
-  toggleModal(): void {
-    this.modalIsVisible = !this.modalIsVisible;
+  togglePopup(): void {
+    this.popupIsVisible = !this.popupIsVisible;
+    this.newCollectionForm.get('name')?.setValue(null);
+    this.popupMessage = {};
   }
 }

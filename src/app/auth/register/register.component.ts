@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from 'src/app/admin/services/user.service';
 
@@ -6,14 +6,16 @@ import { UserService } from 'src/app/admin/services/user.service';
   selector: 'app-register',
   templateUrl: './register.component.html',
 })
-export class RegisterComponent {
-  registerForm: FormGroup;
+export class RegisterComponent implements OnInit {
+  registerForm!: FormGroup;
   message: any;
 
   constructor(
     private formBuilder: FormBuilder,
     private userService: UserService
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     this.registerForm = this.formBuilder.group({
       name: [null, Validators.required],
       password: [null, Validators.required],
@@ -21,16 +23,19 @@ export class RegisterComponent {
     });
   }
 
-  submit(): void {
+  register(): void {
     if (!this.checkFields()) {
       return;
     }
 
     this.userService.createUser(this.registerForm.getRawValue()).subscribe({
-      next: (response) => {
-        this.message = { isError: false, content: response.message };
+      next: () => {
+        this.message = {
+          isError: false,
+          content: 'You were sucessfully registered.',
+        };
       },
-      error: (response) => {
+      error: (response: any) => {
         this.message = { isError: true, content: response.error.message };
       },
     });

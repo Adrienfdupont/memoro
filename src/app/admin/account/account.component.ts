@@ -17,6 +17,7 @@ export class AccountComponent implements OnInit {
   inputsAreVisible = false;
   popupIsVisible = false;
   inputWasChanged = false;
+  loginRedirection = false;
 
   constructor(
     private userService: UserService,
@@ -38,9 +39,14 @@ export class AccountComponent implements OnInit {
 
     const userId = this.authService.getUserId();
     if (userId) {
-      this.userService.getUser(userId).subscribe((user) => {
-        this.user = user;
-        this.updateForm.get('name')?.setValue(this.user.name);
+      this.userService.getUser(userId).subscribe({
+        next: (user: User) => {
+          this.user = user;
+          this.updateForm.get('name')?.setValue(this.user.name);
+        },
+        error: () => {
+          alert('An error has occurred.');
+        },
       });
     }
   }
@@ -70,7 +76,10 @@ export class AccountComponent implements OnInit {
         .updateUser(this.user?.id, this.updateForm.getRawValue())
         .subscribe({
           next: (response: any) => {
-            this.message = { isError: false, content: response.message };
+            this.message = {
+              isError: false,
+              content: 'Your information was successfully updated.',
+            };
             if (response.token) {
               localStorage.setItem('token', response.token);
             }
@@ -92,9 +101,15 @@ export class AccountComponent implements OnInit {
         .deleteUser(this.user?.id, this.deleteForm.getRawValue())
         .subscribe({
           next: () => {
-            this.authService.logout();
+            this.popupMessage = {
+              isError: false,
+              content:
+                'Your account was successfully deleted. \
+                You will be redirected to login after closing this pop-up.',
+            };
+            this.loginRedirection = true;
           },
-          error: (response) => {
+          error: (response: any) => {
             this.popupMessage = {
               isError: true,
               content: response.error.message,
@@ -106,8 +121,9 @@ export class AccountComponent implements OnInit {
 
   checkUpdateFields(): boolean {
     if (
-      this.updateForm.get('name')?.value === this.user?.name &&
-      this.updateForm.get('newPassword')?.value === null
+      this.updateForm.get('name')?.value === '' ||
+      (this.updateForm.get('name')?.value === this.user?.name &&
+        this.updateForm.get('newPassword')?.value === null)
     ) {
       return false;
     }
@@ -146,6 +162,9 @@ export class AccountComponent implements OnInit {
     this.deleteForm.get('password')?.setValue(null);
     if (!this.popupIsVisible) {
       this.popupMessage = {};
+    }
+    if (this.loginRedirection) {
+      this.authService.logout();
     }
   }
 }
