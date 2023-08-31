@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { User } from '../types/user.types';
@@ -9,27 +9,32 @@ import { AuthService } from 'src/app/auth/auth.service';
 })
 export class UserService {
   apiUrl: string;
-  userId: number | null;
 
   constructor(private http: HttpClient, private authService: AuthService) {
     this.apiUrl = 'http://localhost:3000';
-    this.userId = this.authService.getUserId();
   }
 
-  createUser(userdata: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/user/register`, userdata);
+  createUser(data: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/user/register`, data);
   }
 
-  getUser(): Observable<User> {
+  getUser(userId: number): Observable<User> {
     const headers = this.authService.getHeaders();
-    return this.http.get<User>(`${this.apiUrl}/user/${this.userId}`, {
+    return this.http.get<User>(`${this.apiUrl}/user/${userId}`, {
       headers,
     });
   }
 
-  updateUser(userdata: any): Observable<any> {
+  updateUser(userId: number, data: any): Observable<any> {
     const headers = this.authService.getHeaders();
-    return this.http.put<any>(`${this.apiUrl}/user/${this.userId}`, userdata, {
+    return this.http.put<any>(`${this.apiUrl}/user/${userId}`, data, {
+      headers,
+    });
+  }
+
+  deleteUser(userId: number, data: any): Observable<any> {
+    const headers = this.authService.getHeaders();
+    return this.http.post<any>(`${this.apiUrl}/user/delete/${userId}`, data, {
       headers,
     });
   }

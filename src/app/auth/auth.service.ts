@@ -7,11 +7,9 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class AuthService {
-  urlAfterLogin: string;
   apiUrl: string;
 
   constructor(private http: HttpClient, private router: Router) {
-    this.urlAfterLogin = 'account';
     this.apiUrl = 'http://localhost:3000';
   }
 

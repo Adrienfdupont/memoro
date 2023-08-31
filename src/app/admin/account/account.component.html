@@ -4,17 +4,15 @@
   <main class="flex-grow flex justify-center items-center">
     <form
       [formGroup]="updateForm"
-      (submit)="save()"
+      (submit)="updateAccount()"
       class="flex flex-col gap-8 bg-white p-8 rounded-lg w-80"
     >
       <div class="flex flex-col">
         <label for="name">Modify your name :</label>
         <input
           formControlName="name"
-          required
           type="text"
           class="border-b-2 outline-none bg-transparent"
-          value="{{ user?.name }}"
         />
       </div>
 
@@ -22,7 +20,6 @@
         <label for="password">Modify your password :</label>
         <input
           formControlName="newPassword"
-          required
           type="password"
           class="border-b-2 outline-none bg-transparent"
           placeholder="********"
@@ -41,7 +38,6 @@
           <label for="newPassword">Confirm your new password :</label>
           <input
             formControlName="confirmedPassword"
-            required
             type="password"
             class="border-b-2 outline-none bg-transparent"
             placeholder=""
@@ -52,7 +48,6 @@
           <label for="password">Enter your current password :</label>
           <input
             formControlName="password"
-            required
             type="password"
             class="border-b-2 outline-none bg-transparent"
             placeholder=""
@@ -60,10 +55,9 @@
         </div>
       </div>
 
-      <div class="h-8 text-red-500 relative">
+      <div class="h-8 text-red-500">
         <p
           *ngIf="message"
-          class="absolute"
           [ngClass]="{
             'text-red-700': message.isError,
             'text-green-700': !message.isError
@@ -79,6 +73,73 @@
           Save
         </button>
       </div>
+
+      <div>
+        <span
+          class="underline text-red-700 cursor-pointer"
+          (click)="togglePopup()"
+          >Delete account</span
+        >
+      </div>
     </form>
+
+    <div
+      class="fixed inset-0 bg-black opacity-70 flex justify-between items-center"
+      [ngClass]="{ hidden: !popupIsVisible }"
+      (click)="togglePopup()"
+    ></div>
+
+    <div
+      class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col gap-8 bg-white p-2 rounded-lg"
+      [ngClass]="{ hidden: !popupIsVisible }"
+    >
+      <div class="flex justify-end">
+        <i
+          class="material-icons text-3xl hover:cursor-pointer"
+          (click)="togglePopup()"
+          >close</i
+        >
+      </div>
+
+      <form
+        [formGroup]="deleteForm"
+        (ngSubmit)="deleteAccount()"
+        class="px-8 pb-8 flex flex-col gap-8"
+      >
+        <div class="flex flex-col items-center">
+          <i class="material-icons text-6xl text-orange-400">warning</i>
+          <p class="text-center mt-2">
+            The deletion of your account is irreversible. <br />
+            Be sure you want to proceed.
+          </p>
+        </div>
+
+        <div class="flex flex-col">
+          <label for="password">Enter your password :</label>
+          <input
+            formControlName="password"
+            required
+            type="password"
+            class="border-b-2 outline-none"
+          />
+        </div>
+
+        <div class="h-8 text-red-500">
+          <p
+            *ngIf="popupMessage"
+            [ngClass]="{
+              'text-red-700': popupMessage.isError,
+              'text-green-700': !popupMessage.isError
+            }"
+          >
+            {{ popupMessage.content }}
+          </p>
+        </div>
+
+        <div class="flex justify-end items-center">
+          <button type="submit" class="btn warning">Delete</button>
+        </div>
+      </form>
+    </div>
   </main>
 </div>
