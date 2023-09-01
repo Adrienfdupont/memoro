@@ -10,8 +10,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class HomeComponent implements OnInit {
   collections: Collection[] | undefined;
   newCollectionForm!: FormGroup;
+  updateCollectionForm!: FormGroup;
   popupMessage: any;
   popupIsVisible = false;
+  popupForm: FormGroup | undefined;
+  popupCollection: Collection | undefined;
 
   constructor(
     private collectionService: CollectionService,
@@ -23,6 +26,10 @@ export class HomeComponent implements OnInit {
       name: [null, Validators.required],
     });
 
+    this.updateCollectionForm = this.formBuilder.group({
+      newName: [null, Validators.required],
+    });
+
     this.getCollections();
   }
 
@@ -32,7 +39,7 @@ export class HomeComponent implements OnInit {
       .subscribe({
         next: () => {
           this.getCollections();
-          this.togglePopup();
+          this.togglePopup(undefined);
         },
         error: (response: any) => {
           this.popupMessage = {
@@ -41,6 +48,28 @@ export class HomeComponent implements OnInit {
           };
         },
       });
+  }
+
+  updateCollection(): void {
+    if (this.popupCollection) {
+      this.collectionService
+        .updateCollection(
+          this.popupCollection?.id,
+          this.updateCollectionForm.getRawValue()
+        )
+        .subscribe({
+          next: () => {
+            this.getCollections();
+            this.togglePopup(undefined);
+          },
+          error: (response: any) => {
+            this.popupMessage = {
+              isError: true,
+              content: response.error.message,
+            };
+          },
+        });
+    }
   }
 
   getCollections(): void {
@@ -54,9 +83,17 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  togglePopup(): void {
-    this.popupIsVisible = !this.popupIsVisible;
-    this.newCollectionForm.get('name')?.setValue(null);
+  togglePopup(form: FormGroup | undefined): void {
+    this.popupForm = form;
     this.popupMessage = {};
+    this.newCollectionForm.get('name')?.setValue(null);
+    this.popupIsVisible = !this.popupIsVisible;
+  }
+
+  setPopupCollection(collection: Collection): void {
+    this.popupCollection = collection;
+    this.updateCollectionForm
+      .get('newName')
+      ?.setValue(this.popupCollection.name);
   }
 }

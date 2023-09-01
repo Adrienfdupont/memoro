@@ -26,14 +26,21 @@ export class CollectionService {
     );
   }
 
-  addCollection(newCollection: any): Observable<any> {
+  addCollection(data: any): Observable<any> {
     const headers = this.authService.getHeaders();
     return this.http.post<any>(
       `${this.apiUrl}/collection/user/${this.userId}`,
-      newCollection,
+      data,
       {
         headers,
       }
     );
+  }
+
+  updateCollection(id: number, data: any): Observable<any> {
+    const headers = this.authService.getHeaders();
+    return this.http.put<any>(`${this.apiUrl}/collection/${id}`, data, {
+      headers,
+    });
   }
 }

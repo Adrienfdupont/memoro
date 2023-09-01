@@ -7,14 +7,32 @@
     >
       <div
         *ngFor="let collection of collections"
-        class="bg-white flex justify-center items-center aspect-[1/1] cursor-pointer"
+        class="bg-white flex flex-col items-center justify-between aspect-[1/1] cursor-pointer p-2 rounded"
       >
-        <span>{{ collection.name }}</span>
+        <div class="flex justify-between w-full">
+          <i class="material-icons text-3xl text-red-700 hover:text-red-400"
+            >delete</i
+          >
+          <i
+            class="material-icons text-3xl hover:text-gray-500"
+            (click)="
+              togglePopup(this.updateCollectionForm);
+              setPopupCollection(collection)
+            "
+            >edit</i
+          >
+        </div>
+
+        <div>
+          <span>{{ collection.name }}</span>
+        </div>
+
+        <div></div>
       </div>
 
       <div
-        class="bg-white flex justify-center items-center aspect-[1/1] cursor-pointer"
-        (click)="togglePopup()"
+        class="bg-white flex justify-center items-center aspect-[1/1] cursor-pointer rounded"
+        (click)="togglePopup(this.newCollectionForm)"
       >
         <i class="material-icons text-7xl">add</i>
       </div>
@@ -23,7 +41,7 @@
     <div
       class="fixed inset-0 bg-black opacity-70 flex justify-between items-center"
       [ngClass]="{ hidden: !popupIsVisible }"
-      (click)="togglePopup()"
+      (click)="togglePopup(undefined)"
     ></div>
 
     <div
@@ -32,13 +50,14 @@
     >
       <div class="flex justify-end">
         <i
-          class="material-icons text-3xl hover:cursor-pointer"
-          (click)="togglePopup()"
+          class="material-icons text-3xl cursor-pointer"
+          (click)="togglePopup(undefined)"
           >close</i
         >
       </div>
 
       <form
+        *ngIf="popupForm === this.newCollectionForm"
         [formGroup]="newCollectionForm"
         (ngSubmit)="addCollection()"
         class="px-8 pb-8 flex flex-col gap-8"
@@ -72,6 +91,45 @@
             class="btn primary"
           >
             Add
+          </button>
+        </div>
+      </form>
+
+      <form
+        *ngIf="popupForm === this.updateCollectionForm"
+        [formGroup]="updateCollectionForm"
+        (ngSubmit)="updateCollection()"
+        class="px-8 pb-8 flex flex-col gap-8"
+      >
+        <div class="flex flex-col">
+          <label for="newName">Modify name :</label>
+          <input
+            formControlName="newName"
+            required
+            type="text"
+            class="border-b-2 outline-none"
+          />
+        </div>
+
+        <div class="h-16">
+          <p
+            *ngIf="popupMessage"
+            [ngClass]="{
+              'text-red-700': popupMessage.isError,
+              'text-green-700': !popupMessage.isError
+            }"
+          >
+            {{ popupMessage.content }}
+          </p>
+        </div>
+
+        <div class="flex justify-end items-center">
+          <button
+            type="submit"
+            [disabled]="!updateCollectionForm.valid"
+            class="btn primary"
+          >
+            Update
           </button>
         </div>
       </form>
