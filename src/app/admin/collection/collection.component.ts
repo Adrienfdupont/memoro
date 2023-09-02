@@ -77,6 +77,13 @@ export class CollectionComponent implements OnInit {
 
   updateCollection(): void {
     if (this.collection) {
+      if (
+        this.updateCollectionForm.get('newName')?.value === this.collection.name
+      ) {
+        this.togglePopup();
+        return;
+      }
+
       const data = {
         id: this.collection.id,
         newName: this.updateCollectionForm.get('newName')?.value,
@@ -144,6 +151,15 @@ export class CollectionComponent implements OnInit {
 
   updateCard(): void {
     if (this.collection) {
+      if (
+        this.updateCardForm.get('newLabel')?.value === this.cardToEdit?.label &&
+        this.updateCardForm.get('newTranslation')?.value ===
+          this.cardToEdit?.translation
+      ) {
+        this.togglePopup();
+        return;
+      }
+
       const data = {
         id: this.cardToEdit?.id,
         newLabel: this.updateCardForm.get('newLabel')?.value,
@@ -171,6 +187,8 @@ export class CollectionComponent implements OnInit {
   togglePopup(form?: FormGroup): void {
     this.popupForm = form ? form : undefined;
     this.updateCollectionForm.get('newName')?.setValue(this.collection?.name);
+    this.newCardForm.get('label')?.setValue(null);
+    this.newCardForm.get('translation')?.setValue(null);
     this.popupMessage = {};
     this.popupIsVisible = !this.popupIsVisible;
   }
@@ -179,7 +197,6 @@ export class CollectionComponent implements OnInit {
     this.cardToEdit = card;
     this.updateCardForm.get('newLabel')?.setValue(card.label);
     this.updateCardForm.get('newTranslation')?.setValue(card.translation);
-
     this.togglePopup(this.updateCardForm);
   }
 }

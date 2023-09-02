@@ -1,17 +1,12 @@
 <app-navigation></app-navigation>
 
 <main class="p-4 2xl:mx-96">
-  <div class="flex items-center gap-x-4">
+  <div class="flex items-center gap-x-2">
     <span class="text-white text-2xl">{{ collection?.name }}</span>
     <i
       class="material-icons text-3xl text-gray-300 hover:text-white cursor-pointer"
       (click)="togglePopup(updateCollectionForm)"
       >edit</i
-    >
-    <i
-      class="material-icons text-3xl text-red-700 hover:text-red-400 cursor-pointer"
-      (click)="togglePopup()"
-      >delete</i
     >
   </div>
 
@@ -55,7 +50,7 @@
       class="px-8 pb-8 flex flex-col gap-8"
     >
       <div class="flex flex-col">
-        <label for="newName">Modify name :</label>
+        <label for="newName">Name :</label>
         <input
           formControlName="newName"
           required
@@ -64,7 +59,7 @@
         />
       </div>
 
-      <div class="h-16">
+      <div class="h-32">
         <p
           *ngIf="popupMessage"
           [ngClass]="{
@@ -76,13 +71,14 @@
         </p>
       </div>
 
-      <div class="flex justify-end items-center">
+      <div class="flex justify-between items-center">
+        <span class="btn warning" (click)="deleteCollection()">Delete</span>
         <button
           type="submit"
           [disabled]="!updateCollectionForm.valid"
           class="btn primary"
         >
-          Update
+          Save
         </button>
       </div>
     </form>
@@ -113,7 +109,7 @@
         />
       </div>
 
-      <div class="h-16">
+      <div class="h-32">
         <p
           *ngIf="popupMessage"
           [ngClass]="{
@@ -128,7 +124,7 @@
       <div class="flex justify-end items-center">
         <button
           type="submit"
-          [disabled]="!updateCollectionForm.valid"
+          [disabled]="!newCardForm.valid"
           class="btn primary"
         >
           Add
@@ -143,7 +139,7 @@
       class="px-8 pb-8 flex flex-col gap-8"
     >
       <div class="flex flex-col">
-        <label for="newLabel">New label :</label>
+        <label for="newLabel">Label :</label>
         <input
           formControlName="newLabel"
           required
@@ -153,7 +149,7 @@
       </div>
 
       <div class="flex flex-col">
-        <label for="newTranslation">New translation :</label>
+        <label for="newTranslation">Translation :</label>
         <input
           formControlName="newTranslation"
           required
@@ -162,7 +158,7 @@
         />
       </div>
 
-      <div class="h-40">
+      <div class="h-32">
         <p
           *ngIf="popupMessage"
           [ngClass]="{
@@ -175,40 +171,15 @@
       </div>
 
       <div class="flex justify-between items-center">
-        <button class="btn warning">delete</button>
-        <div class="flex justify-end items-center">
-          <button
-            type="submit"
-            [disabled]="!updateCardForm.valid"
-            class="btn primary"
-          >
-            Save
-          </button>
-        </div>
+        <span class="btn warning">Delete</span>
+        <button
+          type="submit"
+          [disabled]="!updateCardForm.valid"
+          class="btn primary"
+        >
+          Save
+        </button>
       </div>
     </form>
-
-    <div *ngIf="!popupForm" class="px-8 pb-8 flex flex-col gap-8 w-64">
-      <div class="flex flex-col">
-        The deletion of a collection is irreversible. <br />
-        Be sure you want to proceed.
-      </div>
-
-      <div class="h-16">
-        <p
-          *ngIf="popupMessage"
-          [ngClass]="{
-            'text-red-700': popupMessage.isError,
-            'text-green-700': !popupMessage.isError
-          }"
-        >
-          {{ popupMessage.content }}
-        </p>
-      </div>
-
-      <div class="flex justify-end items-center">
-        <button class="btn warning" (click)="deleteCollection()">delete</button>
-      </div>
-    </div>
   </div>
 </main>
