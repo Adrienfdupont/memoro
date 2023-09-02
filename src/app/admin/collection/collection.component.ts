@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Collection } from '../types/collection.type';
 import { CollectionService } from '../services/collection.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Card } from '../types/card.type';
+import { CardService } from '../services/card.service';
 
 @Component({
   selector: 'app-collection',
@@ -14,10 +16,12 @@ export class CollectionComponent implements OnInit {
   popupIsVisible = false;
   updateCollectionForm!: FormGroup;
   popupIsForm = false;
+  cards: Card[] | undefined;
 
   constructor(
     private route: ActivatedRoute,
     private collectionService: CollectionService,
+    private cardService: CardService,
     private formBuilder: FormBuilder,
     private router: Router
   ) {}
@@ -36,6 +40,20 @@ export class CollectionComponent implements OnInit {
       this.collectionService.getCollection(parseInt(collectionId)).subscribe({
         next: (response: Collection) => {
           this.collection = response;
+          this.getCards();
+        },
+        error: (response: any) => {
+          alert(response ? response.error.message : 'An error has occurred.');
+        },
+      });
+    }
+  }
+
+  getCards(): void {
+    if (this.collection) {
+      this.cardService.getCards(this.collection.id).subscribe({
+        next: (response: Card[]) => {
+          this.cards = response;
         },
         error: (response: any) => {
           alert(response ? response.error.message : 'An error has occurred.');
