@@ -21,4 +21,9 @@ export class CardService {
       { headers }
     );
   }
+
+  addCard(data: any): Observable<any> {
+    const headers = this.authService.getHeaders();
+    return this.http.post<any>(`${this.apiUrl}/card`, data, { headers });
+  }
 }

@@ -5,12 +5,12 @@
     <span class="text-white text-2xl">{{ collection?.name }}</span>
     <i
       class="material-icons text-3xl text-gray-300 hover:text-white cursor-pointer"
-      (click)="togglePopup(true)"
+      (click)="togglePopup(updateCollectionForm)"
       >edit</i
     >
     <i
       class="material-icons text-3xl text-red-700 hover:text-red-400 cursor-pointer"
-      (click)="togglePopup(false)"
+      (click)="togglePopup()"
       >delete</i
     >
   </div>
@@ -22,6 +22,7 @@
 
     <div
       class="bg-white flex justify-center items-center aspect-[1/1] cursor-pointer rounded 2xl:w-32"
+      (click)="togglePopup(newCardForm)"
     >
       <i class="material-icons text-7xl">add</i>
     </div>
@@ -30,7 +31,7 @@
   <div
     class="fixed inset-0 bg-black opacity-70"
     [ngClass]="{ hidden: !popupIsVisible }"
-    (click)="togglePopup(false)"
+    (click)="togglePopup()"
   ></div>
 
   <div
@@ -38,15 +39,13 @@
     [ngClass]="{ hidden: !popupIsVisible }"
   >
     <div class="flex justify-end">
-      <i
-        class="material-icons text-3xl cursor-pointer"
-        (click)="togglePopup(false)"
+      <i class="material-icons text-3xl cursor-pointer" (click)="togglePopup()"
         >close</i
       >
     </div>
 
     <form
-      *ngIf="popupIsForm"
+      *ngIf="popupForm === updateCollectionForm"
       [formGroup]="updateCollectionForm"
       (ngSubmit)="updateCollection()"
       class="px-8 pb-8 flex flex-col gap-8"
@@ -84,7 +83,56 @@
       </div>
     </form>
 
-    <div *ngIf="!popupIsForm" class="px-8 pb-8 flex flex-col gap-8 w-64">
+    <form
+      *ngIf="popupForm === newCardForm"
+      [formGroup]="newCardForm"
+      (ngSubmit)="addCard()"
+      class="px-8 pb-8 flex flex-col gap-8"
+    >
+      <div class="flex flex-col">
+        <label for="label">Label :</label>
+        <input
+          formControlName="label"
+          required
+          type="text"
+          class="border-b-2 outline-none"
+        />
+      </div>
+
+      <div class="flex flex-col">
+        <label for="translation">Translation :</label>
+        <input
+          formControlName="translation"
+          required
+          type="text"
+          class="border-b-2 outline-none"
+        />
+      </div>
+
+      <div class="h-16">
+        <p
+          *ngIf="popupMessage"
+          [ngClass]="{
+            'text-red-700': popupMessage.isError,
+            'text-green-700': !popupMessage.isError
+          }"
+        >
+          {{ popupMessage.content }}
+        </p>
+      </div>
+
+      <div class="flex justify-end items-center">
+        <button
+          type="submit"
+          [disabled]="!updateCollectionForm.valid"
+          class="btn primary"
+        >
+          Add
+        </button>
+      </div>
+    </form>
+
+    <div *ngIf="!popupForm" class="px-8 pb-8 flex flex-col gap-8 w-64">
       <div class="flex flex-col">
         The deletion of a collection is irreversible. <br />
         Be sure you want to proceed.
