@@ -44,8 +44,8 @@ export class AccountComponent implements OnInit {
           this.user = user;
           this.updateForm.get('name')?.setValue(this.user.name);
         },
-        error: () => {
-          alert('An error has occurred.');
+        error: (response: any) => {
+          alert(response.error.message);
         },
       });
     }
