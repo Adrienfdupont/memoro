@@ -14,4 +14,8 @@
   .warning {
     @apply bg-red-800 border-red-800 border-2 hover:text-red-800;
   }
+
+  body {
+    @apply bg-gray-800;
+  }
 }
