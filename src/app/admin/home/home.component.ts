@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Collection } from '../types/collection.type';
 import { CollectionService } from '../services/collection.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -16,7 +17,8 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private collectionService: CollectionService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -28,28 +30,34 @@ export class HomeComponent implements OnInit {
   }
 
   addCollection(): void {
-    this.collectionService
-      .addCollection(this.newCollectionForm.getRawValue())
-      .subscribe({
-        next: () => {
-          this.getCollections();
-          this.togglePopup();
-        },
-        error: (response: any) => {
-          this.errorMessage = response.error.message;
-        },
-      });
+    const userId = this.authService.getUserId();
+    if (userId) {
+      this.collectionService
+        .addCollection(userId, this.newCollectionForm.getRawValue())
+        .subscribe({
+          next: () => {
+            this.getCollections();
+            this.togglePopup();
+          },
+          error: (response: any) => {
+            this.errorMessage = response.error.message;
+          },
+        });
+    }
   }
 
   getCollections(): void {
-    this.collectionService.getCollections().subscribe({
-      next: (response: any) => {
-        this.collections = response;
-      },
-      error: (response: any) => {
-        alert(response.error.message);
-      },
-    });
+    const userId = this.authService.getUserId();
+    if (userId) {
+      this.collectionService.getCollections(userId).subscribe({
+        next: (response: Collection[]) => {
+          this.collections = response;
+        },
+        error: (response: any) => {
+          alert(response ? response.error.message : 'An error has occurred.');
+        },
+      });
+    }
   }
 
   togglePopup(): void {

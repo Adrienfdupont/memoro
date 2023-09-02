@@ -38,7 +38,7 @@ export class CollectionComponent implements OnInit {
           this.collection = response;
         },
         error: (response: any) => {
-          alert(response.error.message);
+          alert(response ? response.error.message : 'An error has occurred.');
         },
       });
     }
