@@ -43,4 +43,18 @@ export class CollectionService {
       headers,
     });
   }
+
+  getCollection(id: number): Observable<any> {
+    const headers = this.authService.getHeaders();
+    return this.http.get<Collection>(`${this.apiUrl}/collection/${id}`, {
+      headers,
+    });
+  }
+
+  deleteCollection(id: number): Observable<any> {
+    const headers = this.authService.getHeaders();
+    return this.http.delete<any>(`${this.apiUrl}/collection/${id}`, {
+      headers,
+    });
+  }
 }

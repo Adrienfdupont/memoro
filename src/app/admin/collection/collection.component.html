@@ -1,0 +1,112 @@
+<app-navigation></app-navigation>
+
+<main class="p-4 2xl:mx-96">
+  <div class="mb-2 flex items-center gap-x-4">
+    <span class="text-white text-2xl">{{ collection?.name }}</span>
+    <i
+      class="material-icons text-3xl text-gray-300 hover:text-white cursor-pointer"
+      (click)="togglePopup(true)"
+      >edit</i
+    >
+    <i
+      class="material-icons text-3xl text-red-700 hover:text-red-400 cursor-pointer"
+      (click)="togglePopup(false)"
+      >delete</i
+    >
+  </div>
+
+  <div
+    class="grid gap-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-9 2xl:flex 2xl:flex-wrap"
+  >
+    <div
+      class="bg-white flex items-center justify-center aspect-[1/1] cursor-pointer p-2 rounded 2xl:w-32"
+    ></div>
+
+    <div
+      class="bg-white flex justify-center items-center aspect-[1/1] cursor-pointer rounded 2xl:w-32"
+    >
+      <i class="material-icons text-7xl">add</i>
+    </div>
+  </div>
+
+  <div
+    class="fixed inset-0 bg-black opacity-70"
+    [ngClass]="{ hidden: !popupIsVisible }"
+    (click)="togglePopup(false)"
+  ></div>
+
+  <div
+    class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col gap-8 bg-white p-2 rounded-lg"
+    [ngClass]="{ hidden: !popupIsVisible }"
+  >
+    <div class="flex justify-end">
+      <i
+        class="material-icons text-3xl cursor-pointer"
+        (click)="togglePopup(false)"
+        >close</i
+      >
+    </div>
+
+    <form
+      *ngIf="this.popupIsForm"
+      [formGroup]="updateCollectionForm"
+      (ngSubmit)="updateCollection()"
+      class="px-8 pb-8 flex flex-col gap-8"
+    >
+      <div class="flex flex-col">
+        <label for="newName">Modify name :</label>
+        <input
+          formControlName="newName"
+          required
+          type="text"
+          class="border-b-2 outline-none"
+        />
+      </div>
+
+      <div class="h-16">
+        <p
+          *ngIf="popupMessage"
+          [ngClass]="{
+            'text-red-700': popupMessage.isError,
+            'text-green-700': !popupMessage.isError
+          }"
+        >
+          {{ popupMessage.content }}
+        </p>
+      </div>
+
+      <div class="flex justify-end items-center">
+        <button
+          type="submit"
+          [disabled]="!updateCollectionForm.valid"
+          class="btn primary"
+        >
+          Update
+        </button>
+      </div>
+    </form>
+
+    <div *ngIf="!popupIsForm" class="px-8 pb-8 flex flex-col gap-8 w-64">
+      <div class="flex flex-col">
+        The deletion of a collection is irreversible. <br />
+        Be sure you want to proceed.
+      </div>
+
+      <div class="h-16">
+        <p
+          *ngIf="popupMessage"
+          [ngClass]="{
+            'text-red-700': popupMessage.isError,
+            'text-green-700': !popupMessage.isError
+          }"
+        >
+          {{ popupMessage.content }}
+        </p>
+      </div>
+
+      <div class="flex justify-end items-center">
+        <button class="btn warning" (click)="deleteCollection()">delete</button>
+      </div>
+    </div>
+  </div>
+</main>
