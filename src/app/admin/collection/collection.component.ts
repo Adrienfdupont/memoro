@@ -77,25 +77,25 @@ export class CollectionComponent implements OnInit {
 
   updateCollection(): void {
     if (this.collection) {
-      this.collectionService
-        .updateCollection(
-          this.collection?.id,
-          this.updateCollectionForm.getRawValue()
-        )
-        .subscribe({
-          next: () => {
-            this.getCollection();
-            this.togglePopup();
-          },
-          error: (response: any) => {
-            this.popupMessage = {
-              isError: true,
-              content: response.error.message
-                ? response.error.message
-                : 'An error has occurred.',
-            };
-          },
-        });
+      const data = {
+        id: this.collection.id,
+        newName: this.updateCollectionForm.get('newName')?.value,
+      };
+
+      this.collectionService.updateCollection(data).subscribe({
+        next: () => {
+          this.getCollection();
+          this.togglePopup();
+        },
+        error: (response: any) => {
+          this.popupMessage = {
+            isError: true,
+            content: response.error.message
+              ? response.error.message
+              : 'An error has occurred.',
+          };
+        },
+      });
     }
   }
 

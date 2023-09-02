@@ -32,19 +32,22 @@ export class HomeComponent implements OnInit {
   addCollection(): void {
     const userId = this.authService.getUserId();
     if (userId) {
-      this.collectionService
-        .addCollection(userId, this.newCollectionForm.getRawValue())
-        .subscribe({
-          next: () => {
-            this.getCollections();
-            this.togglePopup();
-          },
-          error: (response: any) => {
-            this.errorMessage = response.error.message
-              ? response.error.message
-              : 'An error has occurred.';
-          },
-        });
+      const data = {
+        id: userId,
+        name: this.newCollectionForm.get('name')?.value,
+      };
+
+      this.collectionService.addCollection(data).subscribe({
+        next: () => {
+          this.getCollections();
+          this.togglePopup();
+        },
+        error: (response: any) => {
+          this.errorMessage = response.error.message
+            ? response.error.message
+            : 'An error has occurred.';
+        },
+      });
     }
   }
 

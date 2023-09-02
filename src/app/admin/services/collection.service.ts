@@ -24,20 +24,16 @@ export class CollectionService {
     );
   }
 
-  addCollection(userId: number, data: any): Observable<any> {
+  addCollection(data: any): Observable<any> {
     const headers = this.authService.getHeaders();
-    return this.http.post<any>(
-      `${this.apiUrl}/collection/user/${userId}`,
-      data,
-      {
-        headers,
-      }
-    );
+    return this.http.post<any>(`${this.apiUrl}/collection`, data, {
+      headers,
+    });
   }
 
-  updateCollection(id: number, data: any): Observable<any> {
+  updateCollection(data: any): Observable<any> {
     const headers = this.authService.getHeaders();
-    return this.http.put<any>(`${this.apiUrl}/collection/${id}`, data, {
+    return this.http.put<any>(`${this.apiUrl}/collection`, data, {
       headers,
     });
   }
