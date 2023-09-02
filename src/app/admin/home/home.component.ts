@@ -40,7 +40,9 @@ export class HomeComponent implements OnInit {
             this.togglePopup();
           },
           error: (response: any) => {
-            this.errorMessage = response.error.message;
+            this.errorMessage = response.error.message
+              ? response.error.message
+              : 'An error has occurred.';
           },
         });
     }

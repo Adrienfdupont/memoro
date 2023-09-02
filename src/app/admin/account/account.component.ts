@@ -85,7 +85,12 @@ export class AccountComponent implements OnInit {
             }
           },
           error: (response: any) => {
-            this.message = { isError: true, content: response.error.message };
+            this.message = {
+              isError: true,
+              content: response.error.message
+                ? response.error.message
+                : 'An error has occurred.',
+            };
           },
         });
     }
@@ -112,7 +117,9 @@ export class AccountComponent implements OnInit {
           error: (response: any) => {
             this.popupMessage = {
               isError: true,
-              content: response.error.message,
+              content: response.error.message
+                ? response.error.message
+                : 'An error has occurred.',
             };
           },
         });
