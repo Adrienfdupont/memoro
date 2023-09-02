@@ -10,10 +10,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class HomeComponent implements OnInit {
   collections: Collection[] | undefined;
   newCollectionForm!: FormGroup;
-  updateCollectionForm!: FormGroup;
-  popupMessage: any;
+  errorMessage = '';
   popupIsVisible = false;
-  popupForm: FormGroup | undefined;
   popupCollection: Collection | undefined;
 
   constructor(
@@ -26,10 +24,6 @@ export class HomeComponent implements OnInit {
       name: [null, Validators.required],
     });
 
-    this.updateCollectionForm = this.formBuilder.group({
-      newName: [null, Validators.required],
-    });
-
     this.getCollections();
   }
 
@@ -39,37 +33,12 @@ export class HomeComponent implements OnInit {
       .subscribe({
         next: () => {
           this.getCollections();
-          this.togglePopup(undefined);
+          this.togglePopup();
         },
         error: (response: any) => {
-          this.popupMessage = {
-            isError: true,
-            content: response.error.message,
-          };
+          this.errorMessage = response.error.message;
         },
       });
-  }
-
-  updateCollection(): void {
-    if (this.popupCollection) {
-      this.collectionService
-        .updateCollection(
-          this.popupCollection?.id,
-          this.updateCollectionForm.getRawValue()
-        )
-        .subscribe({
-          next: () => {
-            this.getCollections();
-            this.togglePopup(undefined);
-          },
-          error: (response: any) => {
-            this.popupMessage = {
-              isError: true,
-              content: response.error.message,
-            };
-          },
-        });
-    }
   }
 
   getCollections(): void {
@@ -77,23 +46,15 @@ export class HomeComponent implements OnInit {
       next: (response: any) => {
         this.collections = response;
       },
-      error: () => {
-        alert('An error has occurred.');
+      error: (response: any) => {
+        alert(response.error.message);
       },
     });
   }
 
-  togglePopup(form: FormGroup | undefined): void {
-    this.popupForm = form;
-    this.popupMessage = {};
+  togglePopup(): void {
+    this.errorMessage = '';
     this.newCollectionForm.get('name')?.setValue(null);
     this.popupIsVisible = !this.popupIsVisible;
-  }
-
-  setPopupCollection(collection: Collection): void {
-    this.popupCollection = collection;
-    this.updateCollectionForm
-      .get('newName')
-      ?.setValue(this.popupCollection.name);
   }
 }
