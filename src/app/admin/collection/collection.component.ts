@@ -18,6 +18,8 @@ export class CollectionComponent implements OnInit {
   popupForm: FormGroup | undefined;
   cards: Card[] | undefined;
   newCardForm!: FormGroup;
+  updateCardForm!: FormGroup;
+  cardToEdit: Card | undefined;
 
   constructor(
     private route: ActivatedRoute,
@@ -37,6 +39,11 @@ export class CollectionComponent implements OnInit {
     this.newCardForm = this.formBuilder.group({
       label: [null, Validators.required],
       translation: [null, Validators.required],
+    });
+
+    this.updateCardForm = this.formBuilder.group({
+      newLabel: [null, Validators.required],
+      newTranslation: [null, Validators.required],
     });
   }
 
@@ -135,10 +142,44 @@ export class CollectionComponent implements OnInit {
     }
   }
 
+  updateCard(): void {
+    if (this.collection) {
+      const data = {
+        id: this.cardToEdit?.id,
+        newLabel: this.updateCardForm.get('newLabel')?.value,
+        newTranslation: this.updateCardForm.get('newTranslation')?.value,
+        collectionId: this.collection.id,
+      };
+
+      this.cardService.updateCard(data).subscribe({
+        next: () => {
+          this.getCards();
+          this.togglePopup();
+        },
+        error: (response: any) => {
+          this.popupMessage = {
+            isError: true,
+            content: response.error.message
+              ? response.error.message
+              : 'An error has occurred.',
+          };
+        },
+      });
+    }
+  }
+
   togglePopup(form?: FormGroup): void {
     this.popupForm = form ? form : undefined;
     this.updateCollectionForm.get('newName')?.setValue(this.collection?.name);
     this.popupMessage = {};
     this.popupIsVisible = !this.popupIsVisible;
+  }
+
+  setPopupCard(card: Card): void {
+    this.cardToEdit = card;
+    this.updateCardForm.get('newLabel')?.setValue(card.label);
+    this.updateCardForm.get('newTranslation')?.setValue(card.translation);
+
+    this.togglePopup(this.updateCardForm);
   }
 }

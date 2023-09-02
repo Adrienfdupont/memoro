@@ -18,7 +18,11 @@
   <div
     class="mt-2 grid gap-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-9 2xl:flex 2xl:flex-wrap"
   >
-    <app-card *ngFor="let card of cards" [card]="card"></app-card>
+    <app-card
+      *ngFor="let card of cards"
+      [card]="card"
+      (emitCard)="setPopupCard($event)"
+    ></app-card>
 
     <div
       class="bg-white flex justify-center items-center aspect-[1/1] cursor-pointer rounded 2xl:w-32"
@@ -129,6 +133,58 @@
         >
           Add
         </button>
+      </div>
+    </form>
+
+    <form
+      *ngIf="popupForm === updateCardForm"
+      [formGroup]="updateCardForm"
+      (ngSubmit)="updateCard()"
+      class="px-8 pb-8 flex flex-col gap-8"
+    >
+      <div class="flex flex-col">
+        <label for="newLabel">New label :</label>
+        <input
+          formControlName="newLabel"
+          required
+          type="text"
+          class="border-b-2 outline-none"
+        />
+      </div>
+
+      <div class="flex flex-col">
+        <label for="newTranslation">New translation :</label>
+        <input
+          formControlName="newTranslation"
+          required
+          type="text"
+          class="border-b-2 outline-none"
+        />
+      </div>
+
+      <div class="h-40">
+        <p
+          *ngIf="popupMessage"
+          [ngClass]="{
+            'text-red-700': popupMessage.isError,
+            'text-green-700': !popupMessage.isError
+          }"
+        >
+          {{ popupMessage.content }}
+        </p>
+      </div>
+
+      <div class="flex justify-between items-center">
+        <button class="btn warning">delete</button>
+        <div class="flex justify-end items-center">
+          <button
+            type="submit"
+            [disabled]="!updateCardForm.valid"
+            class="btn primary"
+          >
+            Save
+          </button>
+        </div>
       </div>
     </form>
 

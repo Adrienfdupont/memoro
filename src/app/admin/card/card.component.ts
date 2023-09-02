@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Card } from '../types/card.type';
 
 @Component({
@@ -6,10 +6,16 @@ import { Card } from '../types/card.type';
   templateUrl: './card.component.html',
 })
 export class CardComponent {
-  @Input() card!: Card;
   isReturned = false;
+  @Input() card!: Card;
+  @Output() emitCard = new EventEmitter<Card>();
 
-  toggle(): void {
+  returnCard(): void {
     this.isReturned = !this.isReturned;
+  }
+
+  editCard(card: Card): void {
+    this.isReturned = true;
+    this.emitCard.emit(card);
   }
 }

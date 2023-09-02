@@ -26,4 +26,9 @@ export class CardService {
     const headers = this.authService.getHeaders();
     return this.http.post<any>(`${this.apiUrl}/card`, data, { headers });
   }
+
+  updateCard(data: any): Observable<any> {
+    const headers = this.authService.getHeaders();
+    return this.http.put<any>(`${this.apiUrl}/card`, data, { headers });
+  }
 }
