@@ -184,6 +184,23 @@ export class CollectionComponent implements OnInit {
     }
   }
 
+  deleteCard(): void {
+    this.cardService.deleteCard(this.cardToEdit?.id).subscribe({
+      next: () => {
+        this.getCards();
+        this.togglePopup();
+      },
+      error: (response: any) => {
+        this.popupMessage = {
+          isError: true,
+          content: response.error.message
+            ? response.error.message
+            : 'An error has occurred.',
+        };
+      },
+    });
+  }
+
   togglePopup(form?: FormGroup): void {
     this.popupForm = form ? form : undefined;
     this.updateCollectionForm.get('newName')?.setValue(this.collection?.name);

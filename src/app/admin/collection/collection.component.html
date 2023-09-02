@@ -171,7 +171,7 @@
       </div>
 
       <div class="flex justify-between items-center">
-        <span class="btn warning">Delete</span>
+        <span class="btn warning" (click)="deleteCard()">Delete</span>
         <button
           type="submit"
           [disabled]="!updateCardForm.valid"

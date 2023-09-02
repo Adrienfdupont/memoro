@@ -31,4 +31,9 @@ export class CardService {
     const headers = this.authService.getHeaders();
     return this.http.put<any>(`${this.apiUrl}/card`, data, { headers });
   }
+
+  deleteCard(id: any): Observable<any> {
+    const headers = this.authService.getHeaders();
+    return this.http.delete<any>(`${this.apiUrl}/card/${id}`, { headers });
+  }
 }
