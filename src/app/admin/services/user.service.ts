@@ -32,9 +32,9 @@ export class UserService {
     });
   }
 
-  deleteUser(userId: number, data: any): Observable<any> {
+  deleteUser(data: any): Observable<any> {
     const headers = this.authService.getHeaders();
-    return this.http.post<any>(`${this.apiUrl}/user/delete/${userId}`, data, {
+    return this.http.post<any>(`${this.apiUrl}/user/delete`, data, {
       headers,
     });
   }

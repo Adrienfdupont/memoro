@@ -107,27 +107,30 @@ export class AccountComponent implements OnInit {
     }
 
     if (this.user) {
-      this.userService
-        .deleteUser(this.user?.id, this.deleteForm.getRawValue())
-        .subscribe({
-          next: () => {
-            this.popupMessage = {
-              isError: false,
-              content:
-                'Your account was successfully deleted. \
+      const data = {
+        id: this.user.id,
+        password: this.deleteForm.get('password')?.value,
+      };
+
+      this.userService.deleteUser(data).subscribe({
+        next: () => {
+          this.popupMessage = {
+            isError: false,
+            content:
+              'Your account was successfully deleted. \
                 You will be redirected to login after closing this pop-up.',
-            };
-            this.loginRedirection = true;
-          },
-          error: (response: any) => {
-            this.popupMessage = {
-              isError: true,
-              content: response.error.message
-                ? response.error.message
-                : 'An error has occurred.',
-            };
-          },
-        });
+          };
+          this.loginRedirection = true;
+        },
+        error: (response: any) => {
+          this.popupMessage = {
+            isError: true,
+            content: response.error.message
+              ? response.error.message
+              : 'An error has occurred.',
+          };
+        },
+      });
     }
   }
 
