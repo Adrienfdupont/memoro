@@ -71,28 +71,33 @@ export class AccountComponent implements OnInit {
       this.updateForm.get('name')?.setValue(this.user?.name);
     }
 
+    const data = {
+      id: this.user?.id,
+      name: this.updateForm.get('name')?.value,
+      password: this.updateForm.get('password')?.value,
+      newPassword: this.updateForm.get('newPassword')?.value,
+    };
+
     if (this.user) {
-      this.userService
-        .updateUser(this.user?.id, this.updateForm.getRawValue())
-        .subscribe({
-          next: (response: any) => {
-            this.message = {
-              isError: false,
-              content: 'Your information was successfully updated.',
-            };
-            if (response.token) {
-              localStorage.setItem('token', response.token);
-            }
-          },
-          error: (response: any) => {
-            this.message = {
-              isError: true,
-              content: response.error.message
-                ? response.error.message
-                : 'An error has occurred.',
-            };
-          },
-        });
+      this.userService.updateUser(data).subscribe({
+        next: (response: any) => {
+          this.message = {
+            isError: false,
+            content: 'Your information was successfully updated.',
+          };
+          if (response.token) {
+            localStorage.setItem('token', response.token);
+          }
+        },
+        error: (response: any) => {
+          this.message = {
+            isError: true,
+            content: response.error.message
+              ? response.error.message
+              : 'An error has occurred.',
+          };
+        },
+      });
     }
   }
 

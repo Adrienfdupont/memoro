@@ -25,9 +25,9 @@ export class UserService {
     });
   }
 
-  updateUser(userId: number, data: any): Observable<any> {
+  updateUser(data: any): Observable<any> {
     const headers = this.authService.getHeaders();
-    return this.http.put<any>(`${this.apiUrl}/user/${userId}`, data, {
+    return this.http.put<any>(`${this.apiUrl}/user`, data, {
       headers,
     });
   }
