@@ -7,10 +7,16 @@ import { NavigationComponent } from './navigation/navigation.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HomeComponent } from './home/home.component';
 import { CollectionComponent } from './collection/collection.component';
-import { CardComponent } from './card/card.component';
+import { CardPartialComponent } from './partials/card-partial/card-partial.component';
 
 @NgModule({
-  declarations: [AccountComponent, NavigationComponent, HomeComponent, CollectionComponent, CardComponent],
+  declarations: [
+    AccountComponent,
+    NavigationComponent,
+    HomeComponent,
+    CollectionComponent,
+    CardPartialComponent,
+  ],
   imports: [CommonModule, AdminRoutingModule, ReactiveFormsModule],
 })
 export class AdminModule {}
