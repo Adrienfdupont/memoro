@@ -10,11 +10,13 @@ const routes: Routes = [
     path: '',
     component: HomeComponent,
     canActivate: [authGuard],
+    title: 'Home',
   },
   {
     path: 'account',
     component: AccountComponent,
     canActivate: [authGuard],
+    title: 'Account',
   },
   {
     path: 'collection/:id',

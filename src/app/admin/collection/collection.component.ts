@@ -5,6 +5,7 @@ import { CollectionService } from '../services/collection.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Card } from '../types/card.type';
 import { CardService } from '../services/card.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-collection',
@@ -26,7 +27,8 @@ export class CollectionComponent implements OnInit {
     private collectionService: CollectionService,
     private cardService: CardService,
     private formBuilder: FormBuilder,
-    private router: Router
+    private router: Router,
+    private titleService: Title
   ) {}
 
   ngOnInit(): void {
@@ -54,6 +56,7 @@ export class CollectionComponent implements OnInit {
         next: (response: Collection) => {
           this.collection = response;
           this.getCards();
+          this.titleService.setTitle(this.collection.name);
         },
         error: (response: any) => {
           alert(response ? response.error.message : 'An error has occurred.');
