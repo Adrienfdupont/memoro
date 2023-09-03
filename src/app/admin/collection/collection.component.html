@@ -34,7 +34,7 @@
   ></div>
 
   <div
-    class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col gap-8 bg-white p-2 rounded-lg"
+    class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col bg-white p-2 rounded-lg"
     [ngClass]="{ hidden: !popupIsVisible }"
   >
     <div class="flex justify-end">
@@ -47,8 +47,9 @@
       *ngIf="popupForm === updateCollectionForm"
       [formGroup]="updateCollectionForm"
       (ngSubmit)="updateCollection()"
-      class="px-8 pb-8 flex flex-col gap-8"
+      class="p-8 flex flex-col gap-8"
     >
+      <span class="text-xl">Update collection</span>
       <div class="flex flex-col">
         <label for="newName">Name :</label>
         <input
@@ -87,8 +88,9 @@
       *ngIf="popupForm === newCardForm"
       [formGroup]="newCardForm"
       (ngSubmit)="addCard()"
-      class="px-8 pb-8 flex flex-col gap-8"
+      class="p-8 flex flex-col gap-8"
     >
+      <span class="text-xl">New card</span>
       <div class="flex flex-col">
         <label for="label">Label :</label>
         <input
@@ -136,8 +138,9 @@
       *ngIf="popupForm === updateCardForm"
       [formGroup]="updateCardForm"
       (ngSubmit)="updateCard()"
-      class="px-8 pb-8 flex flex-col gap-8"
+      class="p-8 flex flex-col gap-8"
     >
+      <span class="text-xl">Update card</span>
       <div class="flex flex-col">
         <label for="newLabel">Label :</label>
         <input
