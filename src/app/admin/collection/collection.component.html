@@ -1,0 +1,188 @@
+<app-navigation></app-navigation>
+
+<main class="p-4 2xl:mx-96">
+  <div class="flex items-center gap-x-2">
+    <span class="text-white text-2xl">{{ collection?.name }}</span>
+    <i
+      class="material-icons text-3xl text-gray-300 hover:text-white cursor-pointer"
+      (click)="togglePopup(updateCollectionForm)"
+      >edit</i
+    >
+  </div>
+
+  <div
+    class="mt-2 grid gap-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-9 2xl:flex 2xl:flex-wrap"
+  >
+    <app-card
+      *ngFor="let card of cards"
+      [card]="card"
+      (emitCard)="setPopupCard($event)"
+    ></app-card>
+
+    <div
+      class="bg-white flex justify-center items-center aspect-[1/1] cursor-pointer rounded 2xl:w-32"
+      (click)="togglePopup(newCardForm)"
+    >
+      <i class="material-icons text-7xl">add</i>
+    </div>
+  </div>
+
+  <div
+    class="fixed inset-0 bg-black opacity-70"
+    [ngClass]="{ hidden: !popupIsVisible }"
+    (click)="togglePopup()"
+  ></div>
+
+  <div
+    class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col bg-white p-2 rounded-lg"
+    [ngClass]="{ hidden: !popupIsVisible }"
+  >
+    <div class="flex justify-end">
+      <i class="material-icons text-3xl cursor-pointer" (click)="togglePopup()"
+        >close</i
+      >
+    </div>
+
+    <form
+      *ngIf="popupForm === updateCollectionForm"
+      [formGroup]="updateCollectionForm"
+      (ngSubmit)="updateCollection()"
+      class="p-8 flex flex-col gap-8"
+    >
+      <span class="text-xl">Update collection</span>
+      <div class="flex flex-col">
+        <label for="newName">Name :</label>
+        <input
+          formControlName="newName"
+          required
+          type="text"
+          class="border-b-2 outline-none"
+        />
+      </div>
+
+      <div class="h-32">
+        <p
+          *ngIf="popupMessage"
+          [ngClass]="{
+            'text-red-700': popupMessage.isError,
+            'text-green-700': !popupMessage.isError
+          }"
+        >
+          {{ popupMessage.content }}
+        </p>
+      </div>
+
+      <div class="flex justify-between items-center">
+        <span class="btn warning" (click)="deleteCollection()">Delete</span>
+        <button
+          type="submit"
+          [disabled]="!updateCollectionForm.valid"
+          class="btn primary"
+        >
+          Save
+        </button>
+      </div>
+    </form>
+
+    <form
+      *ngIf="popupForm === newCardForm"
+      [formGroup]="newCardForm"
+      (ngSubmit)="addCard()"
+      class="p-8 flex flex-col gap-8"
+    >
+      <span class="text-xl">New card</span>
+      <div class="flex flex-col">
+        <label for="label">Label :</label>
+        <input
+          formControlName="label"
+          required
+          type="text"
+          class="border-b-2 outline-none"
+        />
+      </div>
+
+      <div class="flex flex-col">
+        <label for="translation">Translation :</label>
+        <input
+          formControlName="translation"
+          required
+          type="text"
+          class="border-b-2 outline-none"
+        />
+      </div>
+
+      <div class="h-32">
+        <p
+          *ngIf="popupMessage"
+          [ngClass]="{
+            'text-red-700': popupMessage.isError,
+            'text-green-700': !popupMessage.isError
+          }"
+        >
+          {{ popupMessage.content }}
+        </p>
+      </div>
+
+      <div class="flex justify-end items-center">
+        <button
+          type="submit"
+          [disabled]="!newCardForm.valid"
+          class="btn primary"
+        >
+          Add
+        </button>
+      </div>
+    </form>
+
+    <form
+      *ngIf="popupForm === updateCardForm"
+      [formGroup]="updateCardForm"
+      (ngSubmit)="updateCard()"
+      class="p-8 flex flex-col gap-8"
+    >
+      <span class="text-xl">Update card</span>
+      <div class="flex flex-col">
+        <label for="newLabel">Label :</label>
+        <input
+          formControlName="newLabel"
+          required
+          type="text"
+          class="border-b-2 outline-none"
+        />
+      </div>
+
+      <div class="flex flex-col">
+        <label for="newTranslation">Translation :</label>
+        <input
+          formControlName="newTranslation"
+          required
+          type="text"
+          class="border-b-2 outline-none"
+        />
+      </div>
+
+      <div class="h-32">
+        <p
+          *ngIf="popupMessage"
+          [ngClass]="{
+            'text-red-700': popupMessage.isError,
+            'text-green-700': !popupMessage.isError
+          }"
+        >
+          {{ popupMessage.content }}
+        </p>
+      </div>
+
+      <div class="flex justify-between items-center">
+        <span class="btn warning" (click)="deleteCard()">Delete</span>
+        <button
+          type="submit"
+          [disabled]="!updateCardForm.valid"
+          class="btn primary"
+        >
+          Save
+        </button>
+      </div>
+    </form>
+  </div>
+</main>

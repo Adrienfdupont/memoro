@@ -1,0 +1,73 @@
+<app-navigation></app-navigation>
+
+<main class="p-4 2xl:mx-96">
+  <span class="text-white text-2xl">Collections</span>
+  <div
+    class="mt-2 grid gap-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-9 2xl:flex 2xl:flex-wrap"
+  >
+    <div
+      *ngFor="let collection of collections"
+      routerLink="/collection/{{ collection.id }}"
+      class="bg-white flex items-center justify-center aspect-[1/1] cursor-pointer p-2 rounded 2xl:w-32"
+    >
+      <span>{{ collection.name }}</span>
+    </div>
+
+    <div
+      class="bg-white flex justify-center items-center aspect-[1/1] cursor-pointer rounded 2xl:w-32"
+      (click)="togglePopup()"
+    >
+      <i class="material-icons text-7xl">add</i>
+    </div>
+  </div>
+
+  <div
+    class="fixed inset-0 bg-black opacity-70"
+    [ngClass]="{ hidden: !popupIsVisible }"
+    (click)="togglePopup()"
+  ></div>
+
+  <div
+    class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col bg-white p-2 rounded-lg"
+    [ngClass]="{ hidden: !popupIsVisible }"
+  >
+    <div class="flex justify-end">
+      <i class="material-icons text-3xl cursor-pointer" (click)="togglePopup()"
+        >close</i
+      >
+    </div>
+
+    <form
+      [formGroup]="newCollectionForm"
+      (ngSubmit)="addCollection()"
+      class="p-8 flex flex-col gap-8"
+    >
+      <span class="text-xl">New collection</span>
+      <div class="flex flex-col">
+        <label for="name">Name :</label>
+        <input
+          formControlName="name"
+          required
+          type="text"
+          class="border-b-2 outline-none"
+        />
+      </div>
+
+      <div class="h-32">
+        <p class="text-red-700">
+          {{ errorMessage }}
+        </p>
+      </div>
+
+      <div class="flex justify-end items-center">
+        <button
+          type="submit"
+          [disabled]="!newCollectionForm.valid"
+          class="btn primary"
+        >
+          Add
+        </button>
+      </div>
+    </form>
+  </div>
+</main>
