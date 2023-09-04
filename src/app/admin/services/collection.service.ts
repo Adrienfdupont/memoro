@@ -3,21 +3,18 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Collection } from '../types/collection.type';
 import { AuthService } from 'src/app/auth/auth.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CollectionService {
-  apiUrl: string;
-
-  constructor(private http: HttpClient, private authService: AuthService) {
-    this.apiUrl = 'http://localhost:3000';
-  }
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
   getCollections(userId: number): Observable<Collection[]> {
     const headers = this.authService.getHeaders();
     return this.http.get<Collection[]>(
-      `${this.apiUrl}/collections/user/${userId}`,
+      `${environment.apiUrl}/collections/user/${userId}`,
       {
         headers,
       }
@@ -26,28 +23,28 @@ export class CollectionService {
 
   addCollection(data: any): Observable<any> {
     const headers = this.authService.getHeaders();
-    return this.http.post<any>(`${this.apiUrl}/collection`, data, {
+    return this.http.post<any>(`${environment.apiUrl}/collection`, data, {
       headers,
     });
   }
 
   updateCollection(data: any): Observable<any> {
     const headers = this.authService.getHeaders();
-    return this.http.put<any>(`${this.apiUrl}/collection`, data, {
+    return this.http.put<any>(`${environment.apiUrl}/collection`, data, {
       headers,
     });
   }
 
   getCollection(id: number): Observable<Collection> {
     const headers = this.authService.getHeaders();
-    return this.http.get<Collection>(`${this.apiUrl}/collection/${id}`, {
+    return this.http.get<Collection>(`${environment.apiUrl}/collection/${id}`, {
       headers,
     });
   }
 
   deleteCollection(id: number): Observable<any> {
     const headers = this.authService.getHeaders();
-    return this.http.delete<any>(`${this.apiUrl}/collection/${id}`, {
+    return this.http.delete<any>(`${environment.apiUrl}/collection/${id}`, {
       headers,
     });
   }
