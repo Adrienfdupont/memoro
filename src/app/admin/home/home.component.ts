@@ -3,6 +3,7 @@ import { Collection } from '../types/collection.type';
 import { CollectionService } from '../services/collection.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -18,7 +19,8 @@ export class HomeComponent implements OnInit {
   constructor(
     private collectionService: CollectionService,
     private formBuilder: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -33,7 +35,7 @@ export class HomeComponent implements OnInit {
     const userId = this.authService.getUserId();
     if (userId) {
       const data = {
-        id: userId,
+        userId: userId,
         name: this.newCollectionForm.get('name')?.value,
       };
 
@@ -69,5 +71,25 @@ export class HomeComponent implements OnInit {
     this.errorMessage = '';
     this.newCollectionForm.get('name')?.setValue(null);
     this.popupIsVisible = !this.popupIsVisible;
+  }
+
+  openCollection(collection: Collection): void {
+    const now = new Date().toLocaleDateString('en-EN');
+
+    if (collection.lastOpen === now) {
+      this.router.navigateByUrl(`/collection/${collection.id}`);
+    } else {
+      this.collectionService
+        .updateCollection({
+          id: collection.id,
+          newName: collection.name,
+          newLastOpen: now,
+        })
+        .subscribe({
+          next: () => {
+            this.router.navigateByUrl(`/collection/${collection.id}`);
+          },
+        });
+    }
   }
 }
