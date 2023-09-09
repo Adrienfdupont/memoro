@@ -3,21 +3,21 @@
 <main class="p-4 2xl:mx-96">
   <span class="text-white text-2xl">Collections</span>
   <div
-    class="mt-2 grid gap-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-9 2xl:flex 2xl:flex-wrap"
+    class="mt-2 grid gap-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:flex 2xl:flex-wrap"
   >
     <div
       *ngFor="let collection of collections"
       (click)="openCollection(collection)"
-      class="bg-white flex flex-col items-center justify-center aspect-[1/1] cursor-pointer p-2 rounded 2xl:w-32"
+      class="bg-white flex flex-col items-center justify-center aspect-[1/1] cursor-pointer p-2 rounded xl:w-40"
     >
       <span class="text-xl">{{ collection.name }}</span>
-      <span *ngIf="collection.lastOpen" class="text-sm"
+      <span *ngIf="collection.lastOpen" class="text-sm text-center"
         >Last open : {{ collection.lastOpen }}
       </span>
     </div>
 
     <div
-      class="bg-white flex justify-center items-center aspect-[1/1] cursor-pointer rounded 2xl:w-32"
+      class="bg-white flex justify-center items-center aspect-[1/1] cursor-pointer rounded xl:w-40"
       (click)="togglePopup()"
     >
       <i class="material-icons text-7xl">add</i>
