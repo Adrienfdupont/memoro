@@ -7,10 +7,13 @@
   >
     <div
       *ngFor="let collection of collections"
-      routerLink="/collection/{{ collection.id }}"
-      class="bg-white flex items-center justify-center aspect-[1/1] cursor-pointer p-2 rounded 2xl:w-32"
+      (click)="openCollection(collection)"
+      class="bg-white flex flex-col items-center justify-center aspect-[1/1] cursor-pointer p-2 rounded 2xl:w-32"
     >
-      <span>{{ collection.name }}</span>
+      <span class="text-xl">{{ collection.name }}</span>
+      <span *ngIf="collection.lastOpen" class="text-sm"
+        >Last open : {{ collection.lastOpen }}
+      </span>
     </div>
 
     <div
