@@ -74,7 +74,11 @@ export class HomeComponent implements OnInit {
   }
 
   openCollection(collection: Collection): void {
-    const now = new Date().toLocaleDateString('en-EN');
+    const now = new Date().toLocaleDateString('en-us', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    });
 
     if (collection.lastOpen === now) {
       this.router.navigateByUrl(`/collection/${collection.id}`);
