@@ -11,7 +11,7 @@
   </div>
 
   <div
-    class="mt-2 grid gap-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-9 2xl:flex 2xl:flex-wrap"
+    class="mt-2 grid gap-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:flex xl:flex-wrap"
   >
     <app-card
       *ngFor="let card of cards"
@@ -20,7 +20,7 @@
     ></app-card>
 
     <div
-      class="bg-white flex justify-center items-center aspect-[1/1] cursor-pointer rounded 2xl:w-32"
+      class="bg-white flex justify-center items-center aspect-[1/1] cursor-pointer rounded xl:w-40"
       (click)="togglePopup(newCardForm)"
     >
       <i class="material-icons text-7xl">add</i>
