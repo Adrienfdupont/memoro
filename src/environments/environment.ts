@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://easy-learn.alwaysdata.net',
+  apiUrl: 'https://memoro-api.alwaysdata.net',
 };
