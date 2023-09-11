@@ -73,7 +73,9 @@
       </div>
 
       <div class="flex justify-between items-center">
-        <span class="btn warning" (click)="deleteCollection()">Delete</span>
+        <span class="btn warning cursor-pointer" (click)="deleteCollection()"
+          >Delete</span
+        >
         <button
           type="submit"
           [disabled]="!updateCollectionForm.valid"
@@ -174,7 +176,9 @@
       </div>
 
       <div class="flex justify-between items-center">
-        <span class="btn warning" (click)="deleteCard()">Delete</span>
+        <span class="btn warning cursor-pointer" (click)="deleteCard()"
+          >Delete</span
+        >
         <button
           type="submit"
           [disabled]="!updateCardForm.valid"
