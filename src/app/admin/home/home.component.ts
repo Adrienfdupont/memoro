@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { Collection } from '../types/collection.type';
 import { CollectionService } from '../services/collection.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -94,6 +94,13 @@ export class HomeComponent implements OnInit {
             this.router.navigateByUrl(`/collection/${collection.id}`);
           },
         });
+    }
+  }
+
+  @HostListener('document:keydown.escape')
+  handleKeyboardEvent(event: KeyboardEvent) {
+    if (this.popupIsVisible) {
+      this.togglePopup();
     }
   }
 }

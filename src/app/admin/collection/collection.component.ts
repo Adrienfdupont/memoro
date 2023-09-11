@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, Renderer2 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Collection } from '../types/collection.type';
 import { CollectionService } from '../services/collection.service';
@@ -218,5 +218,12 @@ export class CollectionComponent implements OnInit {
     this.updateCardForm.get('newLabel')?.setValue(card.label);
     this.updateCardForm.get('newTranslation')?.setValue(card.translation);
     this.togglePopup(this.updateCardForm);
+  }
+
+  @HostListener('document:keydown.escape')
+  handleKeyboardEvent(event: KeyboardEvent) {
+    if (this.popupIsVisible) {
+      this.togglePopup();
+    }
   }
 }
