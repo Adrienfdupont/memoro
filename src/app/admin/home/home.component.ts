@@ -1,4 +1,10 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { Collection } from '../types/collection.type';
 import { CollectionService } from '../services/collection.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -15,6 +21,7 @@ export class HomeComponent implements OnInit {
   errorMessage = '';
   popupIsVisible = false;
   popupCollection: Collection | undefined;
+  @ViewChild('formInput') formInput!: ElementRef;
 
   constructor(
     private collectionService: CollectionService,
@@ -71,6 +78,9 @@ export class HomeComponent implements OnInit {
     this.errorMessage = '';
     this.newCollectionForm.get('name')?.setValue(null);
     this.popupIsVisible = !this.popupIsVisible;
+    setTimeout(() => {
+      this.formInput.nativeElement.focus();
+    }, 0);
   }
 
   openCollection(collection: Collection): void {

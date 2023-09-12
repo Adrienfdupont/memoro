@@ -1,4 +1,12 @@
-import { Component, HostListener, OnInit, Renderer2 } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  OnInit,
+  QueryList,
+  Renderer2,
+  ViewChildren,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Collection } from '../types/collection.type';
 import { CollectionService } from '../services/collection.service';
@@ -21,6 +29,7 @@ export class CollectionComponent implements OnInit {
   newCardForm!: FormGroup;
   updateCardForm!: FormGroup;
   cardToEdit: Card | undefined;
+  @ViewChildren('formInput') formInputs!: QueryList<ElementRef>;
 
   constructor(
     private route: ActivatedRoute,
@@ -211,6 +220,11 @@ export class CollectionComponent implements OnInit {
     this.newCardForm.get('translation')?.setValue(null);
     this.popupMessage = {};
     this.popupIsVisible = !this.popupIsVisible;
+    setTimeout(() => {
+      this.formInputs.forEach((input) => {
+        input.nativeElement.focus();
+      });
+    }, 0);
   }
 
   setPopupCard(card: Card): void {

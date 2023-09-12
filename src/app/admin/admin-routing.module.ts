@@ -10,7 +10,7 @@ const routes: Routes = [
     path: '',
     component: HomeComponent,
     canActivate: [authGuard],
-    title: 'Home',
+    title: 'Memoro - Home',
   },
   {
     path: 'account',
