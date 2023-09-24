@@ -14,7 +14,7 @@ export class CollectionService {
   getCollections(userId: number): Observable<Collection[]> {
     const headers = this.authService.getHeaders();
     return this.http.get<Collection[]>(
-      `${environment.apiUrl}/collections/user/${userId}`,
+      `${environment.apiUrl}/collection/user/${userId}`,
       {
         headers,
       }

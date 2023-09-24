@@ -14,7 +14,7 @@ export class CardService {
   getCards(collectionId: number): Observable<Card[]> {
     const headers = this.authService.getHeaders();
     return this.http.get<Card[]>(
-      `${environment.apiUrl}/cards/collection/${collectionId}`,
+      `${environment.apiUrl}/card/collection/${collectionId}`,
       { headers }
     );
   }
