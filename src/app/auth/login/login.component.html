@@ -25,8 +25,14 @@
     </div>
 
     <div class="h-8 text-red-500">
-      <p>
-        {{ errorMessage }}
+      <p
+        *ngIf="message"
+        [ngClass]="{
+          'text-red-700': message.isError,
+          'text-green-700': !message.isError
+        }"
+      >
+        {{ message.content }}
       </p>
     </div>
 

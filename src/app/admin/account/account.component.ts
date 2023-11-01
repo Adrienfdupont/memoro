@@ -44,8 +44,8 @@ export class AccountComponent implements OnInit {
           this.user = user;
           this.updateForm.get('name')?.setValue(this.user.name);
         },
-        error: (response: any) => {
-          alert(response ? response.error.message : 'An error has occurred.');
+        error: () => {
+          alert('An error has occurred.');
         },
       });
     }
@@ -73,7 +73,7 @@ export class AccountComponent implements OnInit {
 
     const data = {
       id: this.user?.id,
-      name: this.updateForm.get('name')?.value,
+      newName: this.updateForm.get('name')?.value,
       password: this.updateForm.get('password')?.value,
       newPassword: this.updateForm.get('newPassword')?.value,
     };
@@ -90,12 +90,18 @@ export class AccountComponent implements OnInit {
           }
         },
         error: (response: any) => {
-          this.message = {
-            isError: true,
-            content: response.error.message
-              ? response.error.message
-              : 'An error has occurred.',
+          let errorMessage: string;
+          switch (response.status) {
+            case 401:
+              errorMessage = 'Username or password incorrect.';
+              break;
+            case 409:
+              errorMessage = 'This username is already used.';
+              break;
+            default:
+              errorMessage = 'An error has occurred.';
           };
+          this.message = { isError: true, content: errorMessage };
         },
       });
     }
@@ -123,12 +129,15 @@ export class AccountComponent implements OnInit {
           this.loginRedirection = true;
         },
         error: (response: any) => {
-          this.popupMessage = {
-            isError: true,
-            content: response.error.message
-              ? response.error.message
-              : 'An error has occurred.',
+          let errorMessage: string;
+          switch (response.status) {
+            case 401:
+              errorMessage = 'Username or password incorrect.';
+              break;
+            default:
+              errorMessage = 'An error has occurred.';
           };
+          this.popupMessage = { isError: true, content: errorMessage };
         },
       });
     }

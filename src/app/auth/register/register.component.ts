@@ -13,7 +13,7 @@ export class RegisterComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private userService: UserService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.registerForm = this.formBuilder.group({
@@ -36,7 +36,15 @@ export class RegisterComponent implements OnInit {
         };
       },
       error: (response: any) => {
-        this.message = { isError: true, content: response.error.message };
+        let errorMessage: string;
+        switch (response.status) {
+          case 409:
+            errorMessage = 'This username is already used.';
+            break;
+          default:
+            errorMessage = 'An error has occurred.';
+        };
+        this.message = { isError: true, content: errorMessage };
       },
     });
   }
