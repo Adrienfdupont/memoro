@@ -54,9 +54,6 @@ export class HomeComponent implements OnInit {
         error: (response: any) => {
           let errorMessage: string;
           switch (response.status) {
-            case 400:
-              errorMessage = 'All fields must be filled.';
-              break;
             case 409:
               errorMessage = 'You already own this collection.';
               break;

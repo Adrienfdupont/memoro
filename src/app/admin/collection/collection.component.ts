@@ -164,12 +164,15 @@ export class CollectionComponent implements OnInit {
           this.togglePopup();
         },
         error: (response: any) => {
-          this.popupMessage = {
-            isError: true,
-            content: response.error.message
-              ? response.error.message
-              : 'An error has occurred.',
+          let errorMessage: string;
+          switch (response.status) {
+            case 409:
+              errorMessage = 'You already own this card.';
+              break;
+            default:
+              errorMessage = 'An error has occurred.';
           };
+          this.popupMessage = { isError: true, content: errorMessage };
         },
       });
     }
@@ -199,12 +202,15 @@ export class CollectionComponent implements OnInit {
           this.togglePopup();
         },
         error: (response: any) => {
-          this.popupMessage = {
-            isError: true,
-            content: response.error.message
-              ? response.error.message
-              : 'An error has occurred.',
+          let errorMessage: string;
+          switch (response.status) {
+            case 409:
+              errorMessage = 'You already own this card.';
+              break;
+            default:
+              errorMessage = 'An error has occurred.';
           };
+          this.popupMessage = { isError: true, content: errorMessage }; 
         },
       });
     }
@@ -216,12 +222,10 @@ export class CollectionComponent implements OnInit {
         this.getCards();
         this.togglePopup();
       },
-      error: (response: any) => {
+      error: () => {
         this.popupMessage = {
           isError: true,
-          content: response.error.message
-            ? response.error.message
-            : 'An error has occurred.',
+          content: 'An error has occurred.',
         };
       },
     });
@@ -249,7 +253,7 @@ export class CollectionComponent implements OnInit {
   }
 
   @HostListener('document:keydown.escape')
-  handleKeyboardEvent(event: KeyboardEvent) {
+  handleKeyboardEvent() {
     if (this.popupIsVisible) {
       this.togglePopup();
     }
