@@ -68,7 +68,15 @@ export class CollectionComponent implements OnInit {
           this.titleService.setTitle(this.collection.name);
         },
         error: (response: any) => {
-          alert(response ? response.error.message : 'An error has occurred.');
+          let errorMessage: string;
+          switch (response.status) {
+            case 404:
+              errorMessage = 'Card not found.';
+              break;
+            default:
+              errorMessage = 'An error has occurred.';
+          };
+          alert(errorMessage);
         },
       });
     }
@@ -80,8 +88,8 @@ export class CollectionComponent implements OnInit {
         next: (response: Card[]) => {
           this.cards = response;
         },
-        error: (response: any) => {
-          alert(response ? response.error.message : 'An error has occurred.');
+        error: () => {
+          alert('An error has occurred.');
         },
       });
     }
@@ -99,6 +107,11 @@ export class CollectionComponent implements OnInit {
       const data = {
         id: this.collection.id,
         newName: this.updateCollectionForm.get('newName')?.value,
+        newLastOpen: new Date().toLocaleDateString('en-us', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+        })
       };
 
       this.collectionService.updateCollection(data).subscribe({
@@ -107,12 +120,15 @@ export class CollectionComponent implements OnInit {
           this.togglePopup();
         },
         error: (response: any) => {
-          this.popupMessage = {
-            isError: true,
-            content: response.error.message
-              ? response.error.message
-              : 'An error has occurred.',
+          let errorMessage: string;
+          switch (response.status) {
+            case 409:
+              errorMessage = 'You already own this collection.';
+              break;
+            default:
+              errorMessage = 'An error has occurred.';
           };
+          this.popupMessage = { isError: true, content: errorMessage };
         },
       });
     }
@@ -124,12 +140,10 @@ export class CollectionComponent implements OnInit {
         next: () => {
           this.router.navigateByUrl('/');
         },
-        error: (response) => {
+        error: () => {
           this.popupMessage = {
             isError: true,
-            content: response.error.message
-              ? response.error.message
-              : 'An error has occurred.',
+            content: 'An error has occurred.',
           };
         },
       });

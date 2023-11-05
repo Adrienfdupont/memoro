@@ -58,9 +58,15 @@
       </div>
 
       <div class="h-32">
-        <p class="text-red-700">
-          {{ errorMessage }}
-        </p>
+        <p
+        *ngIf="message"
+        [ngClass]="{
+          'text-red-700': message.isError,
+          'text-green-700': !message.isError
+        }"
+      >
+        {{ message.content }}
+      </p>
       </div>
 
       <div class="flex justify-end items-center">
