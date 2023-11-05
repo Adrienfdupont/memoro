@@ -1,10 +1,4 @@
-import {
-  Component,
-  ElementRef,
-  HostListener,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { Collection } from '../types/collection.type';
 import { CollectionService } from '../services/collection.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -27,7 +21,7 @@ export class HomeComponent implements OnInit {
     private collectionService: CollectionService,
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -59,7 +53,7 @@ export class HomeComponent implements OnInit {
               break;
             default:
               errorMessage = 'An error has occurred.';
-          };
+          }
           this.message = { isError: true, content: errorMessage };
         },
       });
@@ -81,7 +75,7 @@ export class HomeComponent implements OnInit {
   }
 
   togglePopup(): void {
-    this.message = { isError: false, content: ''};
+    this.message = { isError: false, content: '' };
     this.newCollectionForm.get('name')?.setValue(null);
     this.popupIsVisible = !this.popupIsVisible;
     setTimeout(() => {

@@ -22,7 +22,7 @@ export class AccountComponent implements OnInit {
   constructor(
     private userService: UserService,
     private formBuilder: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
   ) {}
 
   ngOnInit(): void {
@@ -100,7 +100,7 @@ export class AccountComponent implements OnInit {
               break;
             default:
               errorMessage = 'An error has occurred.';
-          };
+          }
           this.message = { isError: true, content: errorMessage };
         },
       });
@@ -136,7 +136,7 @@ export class AccountComponent implements OnInit {
               break;
             default:
               errorMessage = 'An error has occurred.';
-          };
+          }
           this.popupMessage = { isError: true, content: errorMessage };
         },
       });
@@ -164,8 +164,7 @@ export class AccountComponent implements OnInit {
 
     this.message = {
       isError: true,
-      content:
-        'New password must be confirmed and current password must be set.',
+      content: 'New password must be confirmed and current password must be set.',
     };
     return false;
   }

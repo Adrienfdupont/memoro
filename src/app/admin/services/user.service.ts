@@ -9,7 +9,10 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class UserService {
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService,
+  ) {}
 
   createUser(data: any): Observable<any> {
     return this.http.post<any>(`${environment.apiUrl}/user/register`, data);

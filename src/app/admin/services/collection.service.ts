@@ -9,16 +9,16 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class CollectionService {
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService,
+  ) {}
 
   getCollections(userId: number): Observable<Collection[]> {
     const headers = this.authService.getHeaders();
-    return this.http.get<Collection[]>(
-      `${environment.apiUrl}/collection/user/${userId}`,
-      {
-        headers,
-      }
-    );
+    return this.http.get<Collection[]>(`${environment.apiUrl}/collection/user/${userId}`, {
+      headers,
+    });
   }
 
   addCollection(data: any): Observable<any> {

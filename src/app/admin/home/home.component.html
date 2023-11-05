@@ -35,9 +35,7 @@
     [ngClass]="{ hidden: !popupIsVisible }"
   >
     <div class="flex justify-end">
-      <i class="material-icons text-3xl cursor-pointer" (click)="togglePopup()"
-        >close</i
-      >
+      <i class="material-icons text-3xl cursor-pointer" (click)="togglePopup()">close</i>
     </div>
 
     <form
@@ -59,24 +57,18 @@
 
       <div class="h-32">
         <p
-        *ngIf="message"
-        [ngClass]="{
-          'text-red-700': message.isError,
-          'text-green-700': !message.isError
-        }"
-      >
-        {{ message.content }}
-      </p>
+          *ngIf="message"
+          [ngClass]="{
+            'text-red-700': message.isError,
+            'text-green-700': !message.isError
+          }"
+        >
+          {{ message.content }}
+        </p>
       </div>
 
       <div class="flex justify-end items-center">
-        <button
-          type="submit"
-          [disabled]="!newCollectionForm.valid"
-          class="btn primary"
-        >
-          Add
-        </button>
+        <button type="submit" [disabled]="!newCollectionForm.valid" class="btn primary">Add</button>
       </div>
     </form>
   </div>

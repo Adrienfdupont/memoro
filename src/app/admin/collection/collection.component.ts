@@ -4,7 +4,6 @@ import {
   HostListener,
   OnInit,
   QueryList,
-  Renderer2,
   ViewChildren,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -37,7 +36,7 @@ export class CollectionComponent implements OnInit {
     private cardService: CardService,
     private formBuilder: FormBuilder,
     private router: Router,
-    private titleService: Title
+    private titleService: Title,
   ) {}
 
   ngOnInit(): void {
@@ -75,7 +74,7 @@ export class CollectionComponent implements OnInit {
               break;
             default:
               errorMessage = 'An error has occurred.';
-          };
+          }
           alert(errorMessage);
         },
       });
@@ -97,9 +96,7 @@ export class CollectionComponent implements OnInit {
 
   updateCollection(): void {
     if (this.collection) {
-      if (
-        this.updateCollectionForm.get('newName')?.value === this.collection.name
-      ) {
+      if (this.updateCollectionForm.get('newName')?.value === this.collection.name) {
         this.togglePopup();
         return;
       }
@@ -111,7 +108,7 @@ export class CollectionComponent implements OnInit {
           year: 'numeric',
           month: 'short',
           day: 'numeric',
-        })
+        }),
       };
 
       this.collectionService.updateCollection(data).subscribe({
@@ -127,7 +124,7 @@ export class CollectionComponent implements OnInit {
               break;
             default:
               errorMessage = 'An error has occurred.';
-          };
+          }
           this.popupMessage = { isError: true, content: errorMessage };
         },
       });
@@ -171,7 +168,7 @@ export class CollectionComponent implements OnInit {
               break;
             default:
               errorMessage = 'An error has occurred.';
-          };
+          }
           this.popupMessage = { isError: true, content: errorMessage };
         },
       });
@@ -182,8 +179,7 @@ export class CollectionComponent implements OnInit {
     if (this.collection) {
       if (
         this.updateCardForm.get('newLabel')?.value === this.cardToEdit?.label &&
-        this.updateCardForm.get('newTranslation')?.value ===
-          this.cardToEdit?.translation
+        this.updateCardForm.get('newTranslation')?.value === this.cardToEdit?.translation
       ) {
         this.togglePopup();
         return;
@@ -209,8 +205,8 @@ export class CollectionComponent implements OnInit {
               break;
             default:
               errorMessage = 'An error has occurred.';
-          };
-          this.popupMessage = { isError: true, content: errorMessage }; 
+          }
+          this.popupMessage = { isError: true, content: errorMessage };
         },
       });
     }
