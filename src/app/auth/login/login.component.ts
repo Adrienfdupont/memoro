@@ -9,13 +9,13 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
-  errorMessage = '';
+  message: any;
 
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
@@ -24,16 +24,23 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  login(): string {
+  login(): void {
     this.authService.login(this.loginForm.getRawValue()).subscribe({
       next: (response: any) => {
         localStorage.setItem('token', response.token);
         this.router.navigate(['/']);
       },
       error: (response: any) => {
-        this.errorMessage = response.error.message;
+        let errorMessage: string;
+        switch (response.status) {
+          case 401:
+            errorMessage = 'Username or password incorrect.';
+            break;
+          default:
+            errorMessage = 'An error has occurred.';
+        };
+        this.message = { isError: true, content: errorMessage };
       },
     });
-    return this.errorMessage;
   }
 }

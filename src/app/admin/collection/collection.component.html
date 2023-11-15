@@ -13,11 +13,7 @@
   <div
     class="mt-2 grid gap-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:flex xl:flex-wrap"
   >
-    <app-card
-      *ngFor="let card of cards"
-      [card]="card"
-      (emitCard)="setPopupCard($event)"
-    ></app-card>
+    <app-card *ngFor="let card of cards" [card]="card" (emitCard)="setPopupCard($event)"></app-card>
 
     <div
       class="bg-white flex justify-center items-center aspect-[1/1] cursor-pointer rounded xl:w-40"
@@ -38,9 +34,7 @@
     [ngClass]="{ hidden: !popupIsVisible }"
   >
     <div class="flex justify-end">
-      <i class="material-icons text-3xl cursor-pointer" (click)="togglePopup()"
-        >close</i
-      >
+      <i class="material-icons text-3xl cursor-pointer" (click)="togglePopup()">close</i>
     </div>
 
     <form
@@ -74,14 +68,8 @@
       </div>
 
       <div class="flex justify-between items-center">
-        <span class="btn warning cursor-pointer" (click)="deleteCollection()"
-          >Delete</span
-        >
-        <button
-          type="submit"
-          [disabled]="!updateCollectionForm.valid"
-          class="btn primary"
-        >
+        <span class="btn warning cursor-pointer" (click)="deleteCollection()">Delete</span>
+        <button type="submit" [disabled]="!updateCollectionForm.valid" class="btn primary">
           Save
         </button>
       </div>
@@ -107,12 +95,7 @@
 
       <div class="flex flex-col">
         <label for="translation">Translation :</label>
-        <input
-          formControlName="translation"
-          required
-          type="text"
-          class="border-b-2 outline-none"
-        />
+        <input formControlName="translation" required type="text" class="border-b-2 outline-none" />
       </div>
 
       <div class="h-32">
@@ -128,13 +111,7 @@
       </div>
 
       <div class="flex justify-end items-center">
-        <button
-          type="submit"
-          [disabled]="!newCardForm.valid"
-          class="btn primary"
-        >
-          Add
-        </button>
+        <button type="submit" [disabled]="!newCardForm.valid" class="btn primary">Add</button>
       </div>
     </form>
 
@@ -179,16 +156,8 @@
       </div>
 
       <div class="flex justify-between items-center">
-        <span class="btn warning cursor-pointer" (click)="deleteCard()"
-          >Delete</span
-        >
-        <button
-          type="submit"
-          [disabled]="!updateCardForm.valid"
-          class="btn primary"
-        >
-          Save
-        </button>
+        <span class="btn warning cursor-pointer" (click)="deleteCard()">Delete</span>
+        <button type="submit" [disabled]="!updateCardForm.valid" class="btn primary">Save</button>
       </div>
     </form>
   </div>

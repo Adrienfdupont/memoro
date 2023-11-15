@@ -9,14 +9,16 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class CardService {
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService,
+  ) {}
 
   getCards(collectionId: number): Observable<Card[]> {
     const headers = this.authService.getHeaders();
-    return this.http.get<Card[]>(
-      `${environment.apiUrl}/card/collection/${collectionId}`,
-      { headers }
-    );
+    return this.http.get<Card[]>(`${environment.apiUrl}/card/collection/${collectionId}`, {
+      headers,
+    });
   }
 
   addCard(data: any): Observable<any> {

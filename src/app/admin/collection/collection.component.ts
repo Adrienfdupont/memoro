@@ -4,7 +4,6 @@ import {
   HostListener,
   OnInit,
   QueryList,
-  Renderer2,
   ViewChildren,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -37,7 +36,7 @@ export class CollectionComponent implements OnInit {
     private cardService: CardService,
     private formBuilder: FormBuilder,
     private router: Router,
-    private titleService: Title
+    private titleService: Title,
   ) {}
 
   ngOnInit(): void {
@@ -68,7 +67,15 @@ export class CollectionComponent implements OnInit {
           this.titleService.setTitle(this.collection.name);
         },
         error: (response: any) => {
-          alert(response ? response.error.message : 'An error has occurred.');
+          let errorMessage: string;
+          switch (response.status) {
+            case 404:
+              errorMessage = 'Card not found.';
+              break;
+            default:
+              errorMessage = 'An error has occurred.';
+          }
+          alert(errorMessage);
         },
       });
     }
@@ -80,8 +87,8 @@ export class CollectionComponent implements OnInit {
         next: (response: Card[]) => {
           this.cards = response;
         },
-        error: (response: any) => {
-          alert(response ? response.error.message : 'An error has occurred.');
+        error: () => {
+          alert('An error has occurred.');
         },
       });
     }
@@ -89,9 +96,7 @@ export class CollectionComponent implements OnInit {
 
   updateCollection(): void {
     if (this.collection) {
-      if (
-        this.updateCollectionForm.get('newName')?.value === this.collection.name
-      ) {
+      if (this.updateCollectionForm.get('newName')?.value === this.collection.name) {
         this.togglePopup();
         return;
       }
@@ -99,6 +104,11 @@ export class CollectionComponent implements OnInit {
       const data = {
         id: this.collection.id,
         newName: this.updateCollectionForm.get('newName')?.value,
+        newLastOpen: new Date().toLocaleDateString('en-us', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+        }),
       };
 
       this.collectionService.updateCollection(data).subscribe({
@@ -107,12 +117,15 @@ export class CollectionComponent implements OnInit {
           this.togglePopup();
         },
         error: (response: any) => {
-          this.popupMessage = {
-            isError: true,
-            content: response.error.message
-              ? response.error.message
-              : 'An error has occurred.',
-          };
+          let errorMessage: string;
+          switch (response.status) {
+            case 409:
+              errorMessage = 'You already own this collection.';
+              break;
+            default:
+              errorMessage = 'An error has occurred.';
+          }
+          this.popupMessage = { isError: true, content: errorMessage };
         },
       });
     }
@@ -124,12 +137,10 @@ export class CollectionComponent implements OnInit {
         next: () => {
           this.router.navigateByUrl('/');
         },
-        error: (response) => {
+        error: () => {
           this.popupMessage = {
             isError: true,
-            content: response.error.message
-              ? response.error.message
-              : 'An error has occurred.',
+            content: 'An error has occurred.',
           };
         },
       });
@@ -150,12 +161,15 @@ export class CollectionComponent implements OnInit {
           this.togglePopup();
         },
         error: (response: any) => {
-          this.popupMessage = {
-            isError: true,
-            content: response.error.message
-              ? response.error.message
-              : 'An error has occurred.',
-          };
+          let errorMessage: string;
+          switch (response.status) {
+            case 409:
+              errorMessage = 'You already own this card.';
+              break;
+            default:
+              errorMessage = 'An error has occurred.';
+          }
+          this.popupMessage = { isError: true, content: errorMessage };
         },
       });
     }
@@ -165,8 +179,7 @@ export class CollectionComponent implements OnInit {
     if (this.collection) {
       if (
         this.updateCardForm.get('newLabel')?.value === this.cardToEdit?.label &&
-        this.updateCardForm.get('newTranslation')?.value ===
-          this.cardToEdit?.translation
+        this.updateCardForm.get('newTranslation')?.value === this.cardToEdit?.translation
       ) {
         this.togglePopup();
         return;
@@ -185,12 +198,15 @@ export class CollectionComponent implements OnInit {
           this.togglePopup();
         },
         error: (response: any) => {
-          this.popupMessage = {
-            isError: true,
-            content: response.error.message
-              ? response.error.message
-              : 'An error has occurred.',
-          };
+          let errorMessage: string;
+          switch (response.status) {
+            case 409:
+              errorMessage = 'You already own this card.';
+              break;
+            default:
+              errorMessage = 'An error has occurred.';
+          }
+          this.popupMessage = { isError: true, content: errorMessage };
         },
       });
     }
@@ -202,12 +218,10 @@ export class CollectionComponent implements OnInit {
         this.getCards();
         this.togglePopup();
       },
-      error: (response: any) => {
+      error: () => {
         this.popupMessage = {
           isError: true,
-          content: response.error.message
-            ? response.error.message
-            : 'An error has occurred.',
+          content: 'An error has occurred.',
         };
       },
     });
@@ -235,7 +249,7 @@ export class CollectionComponent implements OnInit {
   }
 
   @HostListener('document:keydown.escape')
-  handleKeyboardEvent(event: KeyboardEvent) {
+  handleKeyboardEvent() {
     if (this.popupIsVisible) {
       this.togglePopup();
     }

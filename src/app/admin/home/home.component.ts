@@ -1,10 +1,4 @@
-import {
-  Component,
-  ElementRef,
-  HostListener,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { Collection } from '../types/collection.type';
 import { CollectionService } from '../services/collection.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -18,7 +12,7 @@ import { Router } from '@angular/router';
 export class HomeComponent implements OnInit {
   collections: Collection[] | undefined;
   newCollectionForm!: FormGroup;
-  errorMessage = '';
+  message: any;
   popupIsVisible = false;
   popupCollection: Collection | undefined;
   @ViewChild('formInput') formInput!: ElementRef;
@@ -27,7 +21,7 @@ export class HomeComponent implements OnInit {
     private collectionService: CollectionService,
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -52,9 +46,15 @@ export class HomeComponent implements OnInit {
           this.togglePopup();
         },
         error: (response: any) => {
-          this.errorMessage = response.error.message
-            ? response.error.message
-            : 'An error has occurred.';
+          let errorMessage: string;
+          switch (response.status) {
+            case 409:
+              errorMessage = 'You already own this collection.';
+              break;
+            default:
+              errorMessage = 'An error has occurred.';
+          }
+          this.message = { isError: true, content: errorMessage };
         },
       });
     }
@@ -67,15 +67,15 @@ export class HomeComponent implements OnInit {
         next: (response: Collection[]) => {
           this.collections = response;
         },
-        error: (response: any) => {
-          alert(response ? response.error.message : 'An error has occurred.');
+        error: () => {
+          alert('An error has occurred.');
         },
       });
     }
   }
 
   togglePopup(): void {
-    this.errorMessage = '';
+    this.message = { isError: false, content: '' };
     this.newCollectionForm.get('name')?.setValue(null);
     this.popupIsVisible = !this.popupIsVisible;
     setTimeout(() => {

@@ -8,11 +8,7 @@
   >
     <div class="flex flex-col">
       <label for="name">Name :</label>
-      <input
-        formControlName="name"
-        type="text"
-        class="border-b-2 outline-none bg-transparent"
-      />
+      <input formControlName="name" type="text" class="border-b-2 outline-none bg-transparent" />
     </div>
 
     <div class="flex flex-col">
@@ -54,7 +50,7 @@
       </div>
     </div>
 
-    <div class="h-8 text-red-500">
+    <div class="h-8">
       <p
         *ngIf="message"
         [ngClass]="{
@@ -67,14 +63,10 @@
     </div>
 
     <div class="flex justify-between items-center">
-      <span
-        class="underline text-red-700 cursor-pointer"
-        (click)="togglePopup()"
+      <span class="underline text-red-700 cursor-pointer" (click)="togglePopup()"
         >Delete account</span
       >
-      <button type="submit" class="btn primary hover:bg-transparent">
-        Save
-      </button>
+      <button type="submit" class="btn primary hover:bg-transparent">Save</button>
     </div>
   </form>
 
@@ -89,11 +81,7 @@
     [ngClass]="{ hidden: !popupIsVisible }"
   >
     <div class="flex justify-end">
-      <i
-        class="material-icons text-3xl hover:cursor-pointer"
-        (click)="togglePopup()"
-        >close</i
-      >
+      <i class="material-icons text-3xl hover:cursor-pointer" (click)="togglePopup()">close</i>
     </div>
 
     <form

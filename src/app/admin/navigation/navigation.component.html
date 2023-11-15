@@ -1,26 +1,18 @@
-<header
-  class="flex justify-between items-center bg-gray-800 text-white p-4 2xl:mx-96"
->
+<header class="flex justify-between items-center bg-gray-800 text-white p-4 2xl:mx-96">
   <div class="flex gap-x-2 text-3xl cursor-pointer" routerLink="/">
     <img src="../../../assets/images/icon-32.png" alt="Memoro icon" />
     <span>Memoro</span>
   </div>
 
   <div>
-    <i
-      class="material-icons text-5xl cursor-pointer lg:hidden"
-      (click)="toggleMenu()"
-      >menu</i
-    >
+    <i class="material-icons text-5xl cursor-pointer lg:hidden" (click)="toggleMenu()">menu</i>
   </div>
 
   <!-- desktop menu -->
   <nav class="hidden lg:block">
     <ul class="flex items-center gap-x-8">
       <li routerLink="/" class="cursor-pointer hover:underline">Home</li>
-      <li routerLink="/account" class="cursor-pointer hover:underline">
-        Account
-      </li>
+      <li routerLink="/account" class="cursor-pointer hover:underline">Account</li>
       <li (click)="logout()">
         <i class="material-icons text-5xl cursor-pointer">logout</i>
       </li>
@@ -36,9 +28,7 @@
     }"
   >
     <div class="flex justify-end">
-      <i class="material-icons text-5xl cursor-pointer" (click)="toggleMenu()"
-        >close</i
-      >
+      <i class="material-icons text-5xl cursor-pointer" (click)="toggleMenu()">close</i>
     </div>
 
     <div class="p-4 leading-loose h-full">
