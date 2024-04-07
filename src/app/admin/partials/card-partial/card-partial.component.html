@@ -1,14 +1,12 @@
 <div
-  class="flex flex-col justify-between items-center bg-white aspect-[1/1] cursor-pointer p-2 rounded xl:w-40"
+  class="relative items-center bg-white aspect-[1/1] cursor-pointer p-2 rounded xl:w-40"
   (click)="returnCard()"
 >
-  <div class="w-full flex justify-end">
-    <i class="material-icons" (click)="editCard(card)">edit</i>
-  </div>
+  <i class="material-icons absolute right-2 top-2" (click)="editCard(card)">edit</i>
 
-  <div class="relative">
+  <div>
     <span
-      class="text-xl absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-opacity duration-150 text-center"
+      class="absolute w-full text-xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-opacity duration-150 text-center"
       [ngClass]="{
         'opacity-1': !isReturned,
         'opacity-0': isReturned
@@ -18,7 +16,7 @@
     </span>
 
     <span
-      class="text-xl absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-opacity duration-150 text-center"
+      class="absolute w-full text-xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-opacity duration-150 text-center"
       [ngClass]="{
         'opacity-1': isReturned,
         'opacity-0': !isReturned
@@ -27,6 +25,4 @@
       {{ card.translation }}
     </span>
   </div>
-
-  <div></div>
 </div>
