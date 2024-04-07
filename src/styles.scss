@@ -14,8 +14,16 @@
   .warning {
     @apply bg-red-800 border-red-800 border-2 hover:text-red-800;
   }
+}
 
+@layer base {
   body {
     @apply bg-gray-800;
+    @apply font-ubuntu;
   }
+}
+
+@font-face {
+  font-family: 'Ubuntu';
+  src: url('../src/assets/fonts/Ubuntu-Light.ttf');
 }
