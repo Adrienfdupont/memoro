@@ -78,9 +78,6 @@ export class HomeComponent implements OnInit {
     this.message = { isError: false, content: '' };
     this.newCollectionForm.get('name')?.setValue(null);
     this.popupIsVisible = !this.popupIsVisible;
-    setTimeout(() => {
-      this.formInput.nativeElement.focus();
-    }, 0);
   }
 
   openCollection(collection: Collection): void {
@@ -108,7 +105,7 @@ export class HomeComponent implements OnInit {
   }
 
   @HostListener('document:keydown.escape')
-  handleKeyboardEvent(event: KeyboardEvent) {
+  handleKeyboardEvent() {
     if (this.popupIsVisible) {
       this.togglePopup();
     }
