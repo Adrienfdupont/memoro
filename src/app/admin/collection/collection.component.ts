@@ -234,11 +234,6 @@ export class CollectionComponent implements OnInit {
     this.newCardForm.get('translation')?.setValue(null);
     this.popupMessage = {};
     this.popupIsVisible = !this.popupIsVisible;
-    setTimeout(() => {
-      this.formInputs.forEach((input) => {
-        input.nativeElement.focus();
-      });
-    }, 0);
   }
 
   setPopupCard(card: Card): void {
