@@ -40,7 +40,7 @@
   ></div>
 
   <div
-    class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col bg-white p-2 rounded-lg"
+    class="fixed w-11/12 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col bg-white p-2 rounded-lg"
     [ngClass]="{ hidden: !popupIsVisible }"
   >
     <div class="flex justify-end">
@@ -52,11 +52,10 @@
       *ngIf="popupForm === updateCollectionForm"
       [formGroup]="updateCollectionForm"
       (ngSubmit)="updateCollection()"
-      class="p-8 flex flex-col gap-8"
+      class="p-2 flex flex-col gap-2"
     >
-      <span class="text-xl">Update collection</span>
       <div class="flex flex-col">
-        <label for="newName">Name :</label>
+        <label for="newName">Collection name :</label>
         <input
           formControlName="newName"
           required
@@ -66,7 +65,7 @@
         />
       </div>
 
-      <div class="flex justify-between items-center">
+      <div class="flex justify-between items-center mt-8">
         <span class="btn warning cursor-pointer" (click)="deleteCollection()">Delete</span>
         <button type="submit" [disabled]="!updateCollectionForm.valid" class="btn primary">
           Save
@@ -79,26 +78,30 @@
       *ngIf="popupForm === newCardForm"
       [formGroup]="newCardForm"
       (ngSubmit)="addCard()"
-      class="p-8 flex flex-col gap-8"
+      class="p-2 flex flex-col gap-2"
     >
-      <span class="text-xl">New card</span>
       <div class="flex flex-col">
-        <label for="label">Label :</label>
-        <input
+        <label for="label">Front :</label>
+        <textarea
           formControlName="label"
           required
-          type="text"
-          class="border-b-2 outline-none"
+          class="border-2 outline-none resize-none p-2"
           #formInput
-        />
+          rows="4"
+        ></textarea>
       </div>
 
       <div class="flex flex-col">
-        <label for="translation">Translation :</label>
-        <input formControlName="translation" required type="text" class="border-b-2 outline-none" />
+        <label for="translation">Back :</label>
+        <textarea
+          formControlName="translation"
+          required
+          class="border-2 outline-none resize-none p-2"
+          rows="4"
+        ></textarea>
       </div>
 
-      <div class="flex justify-end items-center">
+      <div class="flex justify-end items-center mt-8">
         <button type="submit" [disabled]="!newCardForm.valid" class="btn primary">Add</button>
       </div>
     </form>
@@ -108,31 +111,30 @@
       *ngIf="popupForm === updateCardForm"
       [formGroup]="updateCardForm"
       (ngSubmit)="updateCard()"
-      class="p-8 flex flex-col gap-8"
+      class="p-2 flex flex-col gap-2"
     >
-      <span class="text-xl">Update card</span>
       <div class="flex flex-col">
-        <label for="newLabel">Label :</label>
-        <input
+        <label for="newLabel">Front :</label>
+        <textarea
           formControlName="newLabel"
           required
-          type="text"
-          class="border-b-2 outline-none"
+          class="border-2 outline-none resize-none p-2"
           #formInput
-        />
+          rows="4"
+        ></textarea>
       </div>
 
       <div class="flex flex-col">
-        <label for="newTranslation">Translation :</label>
-        <input
+        <label for="newTranslation">Back :</label>
+        <textarea
           formControlName="newTranslation"
           required
-          type="text"
-          class="border-b-2 outline-none"
-        />
+          class="border-2 outline-none resize-none p-2"
+          rows="4"
+        ></textarea>
       </div>
 
-      <div class="flex justify-between items-center">
+      <div class="flex justify-between items-center mt-8">
         <span class="btn warning cursor-pointer" (click)="deleteCard()">Delete</span>
         <button type="submit" [disabled]="!updateCardForm.valid" class="btn primary">Save</button>
       </div>
