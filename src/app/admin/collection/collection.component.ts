@@ -20,7 +20,6 @@ import { Title } from '@angular/platform-browser';
 })
 export class CollectionComponent implements OnInit {
   collection: Collection | undefined;
-  popupMessage: any;
   popupIsVisible = false;
   updateCollectionForm!: FormGroup;
   popupForm: FormGroup | undefined;
@@ -75,15 +74,13 @@ export class CollectionComponent implements OnInit {
           }
         },
         error: (response: any) => {
-          let errorMessage: string;
           switch (response.status) {
             case 404:
-              errorMessage = 'Card not found.';
+              alert('Collection could not be found.');
               break;
             default:
-              errorMessage = 'An error has occurred.';
+              alert('An error has occurred.');
           }
-          alert(errorMessage);
         },
       });
     }
@@ -125,15 +122,13 @@ export class CollectionComponent implements OnInit {
           this.togglePopup();
         },
         error: (response: any) => {
-          let errorMessage: string;
           switch (response.status) {
             case 409:
-              errorMessage = 'You already own this collection.';
+              alert('You already own this collection.');
               break;
             default:
-              errorMessage = 'An error has occurred.';
+              alert('An error has occurred.');
           }
-          this.popupMessage = { isError: true, content: errorMessage };
         },
       });
     }
@@ -142,15 +137,8 @@ export class CollectionComponent implements OnInit {
   deleteCollection(): void {
     if (this.collection) {
       this.collectionService.deleteCollection(this.collection.id).subscribe({
-        next: () => {
-          this.router.navigateByUrl('/');
-        },
-        error: () => {
-          this.popupMessage = {
-            isError: true,
-            content: 'An error has occurred.',
-          };
-        },
+        next: () => this.router.navigateByUrl('/'),
+        error: () => alert('An error has occurred.'),
       });
     }
   }
@@ -169,15 +157,13 @@ export class CollectionComponent implements OnInit {
           this.togglePopup();
         },
         error: (response: any) => {
-          let errorMessage: string;
           switch (response.status) {
             case 409:
-              errorMessage = 'You already own this card.';
+              alert('You already own this card.');
               break;
             default:
-              errorMessage = 'An error has occurred.';
+              alert('An error has occurred.');
           }
-          this.popupMessage = { isError: true, content: errorMessage };
         },
       });
     }
@@ -206,15 +192,13 @@ export class CollectionComponent implements OnInit {
           this.togglePopup();
         },
         error: (response: any) => {
-          let errorMessage: string;
           switch (response.status) {
             case 409:
-              errorMessage = 'You already own this card.';
+              alert('You already own this card.');
               break;
             default:
-              errorMessage = 'An error has occurred.';
+              alert('An error has occurred.');
           }
-          this.popupMessage = { isError: true, content: errorMessage };
         },
       });
     }
@@ -226,12 +210,7 @@ export class CollectionComponent implements OnInit {
         this.getCards();
         this.togglePopup();
       },
-      error: () => {
-        this.popupMessage = {
-          isError: true,
-          content: 'An error has occurred.',
-        };
-      },
+      error: () => alert('An error has occurred.'),
     });
   }
 
@@ -240,7 +219,6 @@ export class CollectionComponent implements OnInit {
     this.updateCollectionForm.get('newName')?.setValue(this.collection?.name);
     this.newCardForm.get('label')?.setValue(null);
     this.newCardForm.get('translation')?.setValue(null);
-    this.popupMessage = {};
     this.popupIsVisible = !this.popupIsVisible;
   }
 

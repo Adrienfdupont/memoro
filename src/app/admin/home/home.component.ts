@@ -12,7 +12,6 @@ import { Router } from '@angular/router';
 export class HomeComponent implements OnInit {
   collections: Collection[] | undefined;
   newCollectionForm!: FormGroup;
-  message: any;
   popupIsVisible = false;
   popupCollection: Collection | undefined;
   @ViewChild('formInput') formInput!: ElementRef;
@@ -46,15 +45,13 @@ export class HomeComponent implements OnInit {
           this.togglePopup();
         },
         error: (response: any) => {
-          let errorMessage: string;
           switch (response.status) {
             case 409:
-              errorMessage = 'You already own this collection.';
+              alert('Collection name already exists.');
               break;
             default:
-              errorMessage = 'An error has occurred.';
+              alert('An error has occurred.');
           }
-          this.message = { isError: true, content: errorMessage };
         },
       });
     }
@@ -75,7 +72,6 @@ export class HomeComponent implements OnInit {
   }
 
   togglePopup(): void {
-    this.message = { isError: false, content: '' };
     this.newCollectionForm.get('name')?.setValue(null);
     this.popupIsVisible = !this.popupIsVisible;
   }

@@ -31,7 +31,7 @@
   ></div>
 
   <div
-    class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col bg-white p-2 rounded-lg"
+    class="fixed w-11/12 max-w-96 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col bg-white p-2 rounded-lg"
     [ngClass]="{ hidden: !popupIsVisible }"
   >
     <div class="flex justify-end">
@@ -41,11 +41,10 @@
     <form
       [formGroup]="newCollectionForm"
       (ngSubmit)="addCollection()"
-      class="p-8 flex flex-col gap-8"
+      class="p-2 flex flex-col gap-2"
     >
-      <span class="text-xl">New collection</span>
       <div class="flex flex-col">
-        <label for="name">Name :</label>
+        <label for="name">Collection name :</label>
         <input
           formControlName="name"
           required
@@ -55,19 +54,7 @@
         />
       </div>
 
-      <div class="h-32">
-        <p
-          *ngIf="message"
-          [ngClass]="{
-            'text-red-700': message.isError,
-            'text-green-700': !message.isError
-          }"
-        >
-          {{ message.content }}
-        </p>
-      </div>
-
-      <div class="flex justify-end items-center">
+      <div class="flex justify-end items-center mt-8">
         <button type="submit" [disabled]="!newCollectionForm.valid" class="btn primary">Add</button>
       </div>
     </form>
