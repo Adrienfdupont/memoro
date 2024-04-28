@@ -28,6 +28,7 @@ export class CollectionComponent implements OnInit {
   newCardForm!: FormGroup;
   updateCardForm!: FormGroup;
   cardToEdit: Card | undefined;
+  isFlipped!: boolean;
   @ViewChildren('formInput') formInputs!: QueryList<ElementRef>;
 
   constructor(
@@ -65,6 +66,13 @@ export class CollectionComponent implements OnInit {
           this.collection = response;
           this.getCards();
           this.titleService.setTitle(this.collection.name);
+
+          const collecionData = localStorage.getItem(collectionId);
+          if (collecionData) {
+            this.isFlipped = JSON.parse(collecionData).isFlipped;
+          } else {
+            this.isFlipped = false;
+          }
         },
         error: (response: any) => {
           let errorMessage: string;
@@ -247,6 +255,17 @@ export class CollectionComponent implements OnInit {
   handleKeyboardEvent() {
     if (this.popupIsVisible) {
       this.togglePopup();
+    }
+  }
+
+  switchLanguage() {
+    this.isFlipped = !this.isFlipped;
+
+    const collecionData = {
+      isFlipped: this.isFlipped,
+    };
+    if (this.collection) {
+      localStorage.setItem(this.collection.id.toString(), JSON.stringify(collecionData));
     }
   }
 }
