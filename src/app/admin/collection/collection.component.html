@@ -47,6 +47,7 @@
       <i class="material-icons text-3xl cursor-pointer" (click)="togglePopup()">close</i>
     </div>
 
+    <!-- update collection form -->
     <form
       *ngIf="popupForm === updateCollectionForm"
       [formGroup]="updateCollectionForm"
@@ -65,18 +66,6 @@
         />
       </div>
 
-      <div class="h-32">
-        <p
-          *ngIf="popupMessage"
-          [ngClass]="{
-            'text-red-700': popupMessage.isError,
-            'text-green-700': !popupMessage.isError
-          }"
-        >
-          {{ popupMessage.content }}
-        </p>
-      </div>
-
       <div class="flex justify-between items-center">
         <span class="btn warning cursor-pointer" (click)="deleteCollection()">Delete</span>
         <button type="submit" [disabled]="!updateCollectionForm.valid" class="btn primary">
@@ -85,6 +74,7 @@
       </div>
     </form>
 
+    <!-- new card form -->
     <form
       *ngIf="popupForm === newCardForm"
       [formGroup]="newCardForm"
@@ -108,23 +98,12 @@
         <input formControlName="translation" required type="text" class="border-b-2 outline-none" />
       </div>
 
-      <div class="h-32">
-        <p
-          *ngIf="popupMessage"
-          [ngClass]="{
-            'text-red-700': popupMessage.isError,
-            'text-green-700': !popupMessage.isError
-          }"
-        >
-          {{ popupMessage.content }}
-        </p>
-      </div>
-
       <div class="flex justify-end items-center">
         <button type="submit" [disabled]="!newCardForm.valid" class="btn primary">Add</button>
       </div>
     </form>
 
+    <!-- update card form -->
     <form
       *ngIf="popupForm === updateCardForm"
       [formGroup]="updateCardForm"
@@ -151,18 +130,6 @@
           type="text"
           class="border-b-2 outline-none"
         />
-      </div>
-
-      <div class="h-32">
-        <p
-          *ngIf="popupMessage"
-          [ngClass]="{
-            'text-red-700': popupMessage.isError,
-            'text-green-700': !popupMessage.isError
-          }"
-        >
-          {{ popupMessage.content }}
-        </p>
       </div>
 
       <div class="flex justify-between items-center">
