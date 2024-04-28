@@ -8,8 +8,8 @@
     <span
       class="absolute w-full text-xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-opacity duration-150 text-center"
       [ngClass]="{
-        'opacity-1': !isReturned,
-        'opacity-0': isReturned
+        'opacity-1': !isFlipped,
+        'opacity-0': isFlipped
       }"
     >
       {{ card.label }}
@@ -18,8 +18,8 @@
     <span
       class="absolute w-full text-xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-opacity duration-150 text-center"
       [ngClass]="{
-        'opacity-1': isReturned,
-        'opacity-0': !isReturned
+        'opacity-1': isFlipped,
+        'opacity-0': !isFlipped
       }"
     >
       {{ card.translation }}

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Card } from '../../types/card.type';
 
 @Component({
@@ -6,16 +6,16 @@ import { Card } from '../../types/card.type';
   templateUrl: './card-partial.component.html',
 })
 export class CardPartialComponent {
-  isReturned = false;
+  @Input() isFlipped!: boolean;
   @Input() card!: Card;
   @Output() emitCard = new EventEmitter<Card>();
 
   returnCard(): void {
-    this.isReturned = !this.isReturned;
+    this.isFlipped = !this.isFlipped;
   }
 
   editCard(card: Card): void {
-    this.isReturned = true;
+    this.isFlipped = true;
     this.emitCard.emit(card);
   }
 }
